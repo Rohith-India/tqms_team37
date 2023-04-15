@@ -11,7 +11,7 @@ Onetime Setup:
         pip install flask_bcrypt
         pip install flask_cors
         touch app.py
-        update app.py
+        update app.py // Not a command
 
 Start Server:
 
@@ -25,7 +25,7 @@ Onetime Setup:
             cd tqms
             npx create-react-app client
             cd client
-            update App.js
+            update App.js // Not a command
 
 Start Client:
 
