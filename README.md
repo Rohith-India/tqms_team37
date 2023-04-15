@@ -18,6 +18,19 @@ Start Server:
         export FLASK_APP=app.py
         flask run
     
+Client Setup:
+
+Onetime Setup:
+
+            cd tqms
+            npx create-react-app client
+            cd client
+            update App.js
+
+Start Client:
+
+            npm start
+    
 API Commands:
 
     User login:
@@ -87,14 +100,3 @@ API Commands:
       "success": "User updated successfully"
 
     }
-    
-Client Setup:
-Onetime Setup:
-    cd tqms
-    npx create-react-app client
-    cd client
-    update App.js
-
-Start Client:
-    npm start
-    
