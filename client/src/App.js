@@ -9,15 +9,7 @@ const App = () => {
   const [users, setUsers] = useState([]);
   const [role, setRole] = useState('');
 
-  const [tenders, setTenders] = useState([]);
-  const [selectedTender, setSelectedTender] = useState(null);
-  const [selectedBid, setSelectedBid] = useState(null);
   const [formData, setFormData] = useState({});
-
-  const NEW = "New";
-  const PENDING = "Pending";
-  const AWARDED = "Awarded";
-  const CLOSED = "Closed";
 
   const register = async () => {
     if (!email || !password || !role) {
