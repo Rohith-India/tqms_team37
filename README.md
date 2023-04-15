@@ -1,22 +1,25 @@
 # tqms_team37
 
 Onetime Setup:
-    mkdir tqms/server
-    cd tqms/server
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install Flask
-    pip install flask_pymongo
-    pip install flask_bcrypt
-    pip install flask_cors
-    touch app.py
-    update app.py
+
+        mkdir tqms/server
+        cd tqms/server
+        python3 -m venv venv
+        source venv/bin/activate
+        pip install Flask
+        pip install flask_pymongo
+        pip install flask_bcrypt
+        pip install flask_cors
+        touch app.py
+        update app.py
 
 Start Server:
-    export FLASK_APP=app.py
-    flask run
+
+        export FLASK_APP=app.py
+        flask run
     
-API Commands
+API Commands:
+
     User login:
     curl -X POST -H "Content-Type: application/json" -d '{"email":"admin@example.com","password":"admin_password"}' http://localhost:5000/login
 
