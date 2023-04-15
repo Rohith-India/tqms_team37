@@ -62,26 +62,7 @@ const App = () => {
     alert('User deleted successfully');
   };
 
-  useEffect(() => {
-    axios.get("http://127.0.0.1:5000/tenders").then((res) => {
-      setTenders(res.data);
-    });
-  }, []);
-
-  const handleDelete = (id) => {
-    axios.delete(`http://127.0.0.1:5000/tenders/${id}`).then((res) => {
-      setTenders(tenders.filter((tender) => tender._id !== id));
-    });
-  };
-
-  const handleUpdateStatus = (id, status) => {
-    axios.put(`http://127.0.0.1:5000/tenders/${id}/status`, { status }).then((res) => {
-      const updatedTenders = tenders.map((tender) =>
-        tender._id === id ? { ...tender, status } : tender
-      );
-      setTenders(updatedTenders);
-    });
-  };
+  
   return (
     <div>
       <header className="App-header">
