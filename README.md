@@ -75,7 +75,7 @@ I USER MANAGEMENT
 
 2. Create a new user:
 
-        curl -X POST -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>","role":"<role>","email":"<email>","contactNo":"<contactNo>","address":"<address>","organization":"<organization>"}' http://localhost:5000/users
+        curl -X POST -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"username":"<username>","password":"<password>","role":"<role>","email":"<email>","contactNo":"<contactNo>","address":"<address>","organization":"<organization>"}' http://localhost:5000/users
 
 
 3. Get all users:
@@ -88,7 +88,7 @@ I USER MANAGEMENT
 
 5. Update an existing user:
 
-        curl -X PUT -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/users/<userid> -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}'
+        curl -X PUT -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}' http://localhost:5000/users/<userid>
 
 6. Delete a user:
 
@@ -99,14 +99,7 @@ II TENDER MANAGEMENT
 
 1. Create a new tender:
 
-        curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer <access_token>' -d '{
-        "title": "Tender Title",
-        "description": "Tender Description",
-        "start_date": "2023-05-01",
-        "deadline": "2023-05-31",
-        "location": "Tender Location",
-        "userid": "<User ID of the tender owner>"
-        }' http://localhost:5000/tenders
+        curl -X POST -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{ "title": "New Tender", "description": "This is a new tender.", "start_date": "2023-05-01", "deadline": "2023-05-15", "location": "New York City", "userid": "<owner_user_id>" }' http://localhost:5000/tenders
 
 
 2. Get all tenders:
@@ -115,7 +108,7 @@ II TENDER MANAGEMENT
 
 3. Get a specific tender:
 
-        curl -H "Authorization: Bearer <access_token>" http://localhost:5000/tenders/<tender_id>
+        curl -H 'Authorization: Bearer <access_token>' http://localhost:5000/tenders/<tender_id>
 
 4. Delete a tender:
 
@@ -141,7 +134,7 @@ III QUOTATION MANAGEMENT
 
 1. Create a new quotation
 
-        curl -X POST -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"amount": "1000", "currency": "USD", "validity_days": "30", "description": "Quotation for tender xyz"}' http://localhost:5000/quotations?tender_id=<TENDER_ID>&userid=<VENDOR_ID>
+        curl -X POST -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"amount": "1000", "currency": "USD", "validity_days": "30", "description": "Quotation for tender xyz"}' http://localhost:5000/quotations?tender_id=<tender_id>&userid=<vendor_id>
 
 2. GET quotations for a given tender
 
