@@ -71,7 +71,7 @@ I USER MANAGEMENT
 
 1. Login:
 
-        curl -X POST -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>"}' http://localhost:5000/login
+        curl -X POST -H 'Content-Type: application/json' -d '{"username":"<username>","password":"<password>"}' http://localhost:5000/login
 
 2. Create a new user:
 
@@ -80,11 +80,11 @@ I USER MANAGEMENT
 
 3. Get all users:
 
-        curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users
+        curl -X GET -H 'Authorization: Bearer <access_token>' http://localhost:5000/users
 
 4. Get a specific user:
 
-        curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users/<user_id>
+        curl -X GET -H 'Authorization: Bearer <access_token>' http://localhost:5000/users/<user_id>
 
 5. Update an existing user:
 
@@ -99,7 +99,7 @@ II TENDER MANAGEMENT
 
 1. Create a new tender:
 
-        curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <JWT Token>" -d '{
+        curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer <access_token>' -d '{
         "title": "Tender Title",
         "description": "Tender Description",
         "start_date": "2023-05-01",
@@ -123,16 +123,42 @@ II TENDER MANAGEMENT
 
 5. Assign a tender to list of vendors:
 
-        curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <your_token>" -d '{"tender_id": "<tender_id>", "vendor_ids": ["<vendor_id_1>", "<vendor_id_2>"]}' http://localhost:5000/tenders/assign
+        curl -X POST -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"tender_id": "<tender_id>", "vendor_ids": ["<vendor_id_1>", "<vendor_id_2>"]}' http://localhost:5000/tenders/assign
 
 
 6. Get all tenders assigned to a vendor:
 
-        curl -X GET -H "Authorization: Bearer <your_access_token>" -H "Content-Type: application/json" http://localhost:5000/tenders/vendors/<vendor_id>
+        curl -X GET -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/tenders/vendors/<vendor_id>
 
 7. Update an existing tender:
 
-        curl -X PUT  -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{ "title": "<new_title>", "description": "<new_description>", "start_date": "<new_start_date>", "deadline": "<new_deadline>", "location": "<new_location>", "status": "<new_status>" }' http://localhost:5000/tenders/<tender_id>
+        curl -X PUT  -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{ "title": "<new_title>", "description": "<new_description>", "start_date": "<new_start_date>", "deadline": "<new_deadline>",
+    "location": "<new_location>", "status": "<new_status>" }' http://localhost:5000/tenders/<tender_id>
 
 
 III QUOTATION MANAGEMENT
+
+
+1. Create a new quotation
+
+        curl -X POST -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"amount": "1000", "currency": "USD", "validity_days": "30", "description": "Quotation for tender xyz"}' http://localhost:5000/quotations?tender_id=<TENDER_ID>&userid=<VENDOR_ID>
+
+2. GET quotations for a given tender
+
+        curl -X GET -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/tenders/<tender_id>/quotations
+
+3. GET the quotation created by a vendor for a given tender
+
+        curl -X GET -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/tenders/<tender_id>/quotations/<vendor_id>
+
+4. Update an existing quotation
+
+        curl -X PUT -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/quotations/<quotation_id>?userid=<vendor_id> -d '{ "amount": 10000, "currency": "USD", "validity_days": 30, "description": "Updated quotation description" }'
+
+5. Update decision (accepted/accepted) for a quotation
+
+        curl -X PUT -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/quotations/<quotation_id>/decision -d '{ "status": "accepted" }'
+
+6. Delete a quotation
+
+        curl -X DELETE -H 'Authorization: Bearer <access_token>' http://localhost:5000/tenders/<tender_id>/quotations/<vendor_id>
