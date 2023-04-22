@@ -97,6 +97,42 @@ I USER MANAGEMENT
 
 II TENDER MANAGEMENT
 
+1. Create a new tender:
+
+        curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <JWT Token>" -d '{
+        "title": "Tender Title",
+        "description": "Tender Description",
+        "start_date": "2023-05-01",
+        "deadline": "2023-05-31",
+        "location": "Tender Location",
+        "userid": "<User ID of the tender owner>"
+        }' http://localhost:5000/tenders
+
+
+2. Get all tenders:
+
+        curl -X GET -H 'Authorization: Bearer <access_token>' http://localhost:5000/tenders?userid=<owner_id>
+
+3. Get a specific tender:
+
+        curl -H "Authorization: Bearer <access_token>" http://localhost:5000/tenders/<tender_id>
+
+4. Delete a tender:
+
+        curl -X DELETE -H 'Authorization: Bearer <access_token>' http://localhost:5000/tenders/<tender_id> 
+
+5. Assign a tender to list of vendors:
+
+        curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <your_token>" -d '{"tender_id": "<tender_id>", "vendor_ids": ["<vendor_id_1>", "<vendor_id_2>"]}' http://localhost:5000/tenders/assign
+
+
+6. Get all tenders assigned to a vendor:
+
+        curl -X GET -H "Authorization: Bearer <your_access_token>" -H "Content-Type: application/json" http://localhost:5000/tenders/vendors/<vendor_id>
+
+7. Update an existing tender:
+
+        curl -X PUT  -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{ "title": "<new_title>", "description": "<new_description>", "start_date": "<new_start_date>", "deadline": "<new_deadline>", "location": "<new_location>", "status": "<new_status>" }' http://localhost:5000/tenders/<tender_id>
 
 
 III QUOTATION MANAGEMENT
