@@ -61,11 +61,16 @@ function Quotations() {
         }
     };
 
+    const handlePopupClose = () => {
+        window.close(); // Close the current window
+    };
+
     return (
         <div>
             <h1>Quotations</h1>
             <button onClick={handleAcceptQuotation} disabled={!selectedQuotation}>Accept Quotation</button>
             <button onClick={handleRejectQuotation} disabled={!selectedQuotation}>Reject Quotation</button>
+            <button onClick={handlePopupClose}>Close</button>
             <table border="2">
                 <thead>
                     <tr>

@@ -60,9 +60,9 @@ def register():
             'address': address,
             'organization': organization,
         })
-        return jsonify({'success': True})
+        return jsonify({'success': True}), 200
     else:
-        return jsonify({'success': False, 'message': 'User already exists.'}), 400
+        return jsonify({'success': False, 'message': 'User already exists.'}), 422
 
 # login
 @app.route('/login', methods=['POST'])
@@ -74,9 +74,9 @@ def login():
     user = mongo.db.users.find_one({'username': username})
     if user and check_password_hash(user['password'], password):
         access_token = create_access_token(identity=user['username'], additional_claims={'role': user['role']})
-        return jsonify({'success': True, 'access_token': access_token, 'role': user['role'], 'userid': str(user['_id'])})
+        return jsonify({'success': True, 'access_token': access_token, 'role': user['role'], 'userid': str(user['_id'])}), 200
     else:
-        return jsonify({'success': False, 'message': 'Invalid credentials.'})
+        return jsonify({'success': False, 'message': 'Invalid credentials.'}), 400
 
 # Get all users
 # Get users by role
@@ -94,9 +94,9 @@ def get_users():
         for user in users_list:
             user['_id'] = str(user['_id'])  # Convert ObjectId to string
        
-        return jsonify({'success': True, 'users': users_list})
+        return jsonify({'success': True, 'users': users_list}), 200
     else:
-        return jsonify({'success': False, 'message': 'Not authorized to access users.'})
+        return jsonify({'success': False, 'message': 'Not authorized to access users.'}), 401
 
 @app.route('/users/<user_id>', methods=['GET'])
 @jwt_required()
@@ -106,27 +106,12 @@ def get_user(user_id):
         user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
         user['_id'] = str(user['_id'])  # Convert ObjectId to string
         if user is not None:
-            return jsonify({'success': True, 'user': user})
+            return jsonify({'success': True, 'user': user}), 200
         else:
-            return jsonify({'success': False, 'message': 'User not found.'})
+            return jsonify({'success': False, 'message': 'User not found.'}), 404
     else:
-        return jsonify({'success': False, 'message': 'Not authorized to access user.'})
+        return jsonify({'success': False, 'message': 'Not authorized to access user.'}), 401
 
-"""
-# Get a user
-@app.route('/users/<username>', methods=['GET'])
-@jwt_required()
-def get_user(username):
-    jwt_payload = get_jwt()
-    if 'role' in jwt_payload and jwt_payload['role'] in ['admin', 'tender_manager']:
-        user = mongo.db.users.find_one({'username': username}, {'password': 0})
-        if user is not None:
-            return jsonify({'success': True, 'user': {'username': user['username'], 'role': user['role']}})
-        else:
-            return jsonify({'success': False, 'message': 'User not found.'})
-    else:
-        return jsonify({'success': False, 'message': 'Not authorized to access users.'})
-"""
 # Update an existing user
 @app.route('/users/<userid>', methods=['PUT'])
 @jwt_required()
@@ -177,11 +162,11 @@ def delete_user(userid):
     if 'role' in jwt_payload and jwt_payload['role'] == 'admin':
         result = mongo.db.users.delete_one({'_id': ObjectId(userid)})
         if result.deleted_count == 1:
-            return jsonify({'success': True})
+            return jsonify({'success': True}), 200
         else:
-            return jsonify({'success': False, 'message': 'User not found.'})
+            return jsonify({'success': False, 'message': 'User not found.'}), 404
     else:
-        return jsonify({'success': False, 'message': 'Not authorized to delete user.'})
+        return jsonify({'success': False, 'message': 'Not authorized to delete user.'}), 401
 
 # Create a new tender
 @app.route('/tenders', methods=['POST'])
@@ -206,11 +191,11 @@ def create_tender():
                 'status': 'Open',
                 'owner': owner
             })
-            return jsonify({'success': True})
+            return jsonify({'success': True}), 200
         else:
-            return jsonify({'success': False, 'message': 'Tender already exists.'})
+            return jsonify({'success': False, 'message': 'Tender already exists.'}), 422
     else:
-        return jsonify({'success': False, 'message': 'Not authorized to create tender.'})
+        return jsonify({'success': False, 'message': 'Not authorized to create tender.'}), 401
 
 
 # Get all tenders
@@ -224,9 +209,9 @@ def get_all_tenders():
         tenders_list = [tender for tender in tenders]
         for tender in tenders_list:
             tender['_id'] = str(tender['_id'])  # Convert ObjectId to string
-        return jsonify({'success': True, 'tenders': tenders_list})
+        return jsonify({'success': True, 'tenders': tenders_list}), 200
     else:
-        return jsonify({'success': False, 'message': 'Not authorized to access tenders.'})
+        return jsonify({'success': False, 'message': 'Not authorized to access tenders.'}), 401
 
 # Get a tender
 @app.route('/tenders/<tender_id>', methods=['GET'])
@@ -237,11 +222,11 @@ def get_tender(tender_id):
         tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
         tender['_id'] = str(tender['_id'])  # Convert ObjectId to string
         if tender is not None:
-            return jsonify({'success': True, 'tender': tender})
+            return jsonify({'success': True, 'tender': tender}), 200
         else:
-            return jsonify({'success': False, 'message': 'Tender not found.'})
+            return jsonify({'success': False, 'message': 'Tender not found.'}), 404
     else:
-        return jsonify({'success': False, 'message': 'Not authorized to access tender.'})
+        return jsonify({'success': False, 'message': 'Not authorized to access tender.'}), 401
 
 # Delete a tender
 @app.route('/tenders/<tender_id>', methods=['DELETE'])
@@ -251,11 +236,11 @@ def delete_tender(tender_id):
     if 'role' in jwt_payload and jwt_payload['role'] in ['admin', 'tender_manager']:
         result = mongo.db.tenders.delete_one({'_id': ObjectId(tender_id)})
         if result.deleted_count == 1:
-            return jsonify({'success': True})
+            return jsonify({'success': True}), 200
         else:
-            return jsonify({'success': False, 'message': 'Tender not found.'})
+            return jsonify({'success': False, 'message': 'Tender not found.'}), 404
     else:
-        return jsonify({'success': False, 'message': 'Not authorized to delete tender.'})
+        return jsonify({'success': False, 'message': 'Not authorized to delete tender.'}), 401
 
 # Assign a tender to list of vendors
 @app.route('/tenders/assign', methods=['POST'])
@@ -293,7 +278,7 @@ def assign_tender():
                 tender['assigned_vendors'].append(vendor_id)
         mongo.db.tenders.update_one({'_id': tender['_id']}, {'$set': {'assigned_vendors': tender['assigned_vendors']}})
 
-        return jsonify({'status': 'success', 'message': 'Tender assigned to vendors successfully'}), 201
+        return jsonify({'status': 'success', 'message': 'Tender assigned to vendors successfully'}), 200
     else:
         return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
 
@@ -342,7 +327,7 @@ def update_tender(tender_id):
                 mongo.db.tenders.update_one({'_id': ObjectId(tender_id)}, {'$set': {'status': status}})
             updated_tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
             updated_tender['_id'] = str(updated_tender['_id'])  # Convert ObjectId to string
-            return jsonify({'success': True, 'message': 'Tender updated successfully', 'tender': updated_tender})
+            return jsonify({'success': True, 'message': 'Tender updated successfully', 'tender': updated_tender}), 200
         else:
             return jsonify({'success': False, 'message': 'Tender not found.'}), 404
     else:
@@ -386,9 +371,9 @@ def create_quotation():
             'description': description,
             'status': 'submitted'
         }
-        mongo.db.quotations.insert_one(quotation) # Convert ObjectId to string
+        mongo.db.quotations.insert_one(quotation)
         quotation['_id'] = str(quotation['_id'])  # Convert ObjectId to string
-        return jsonify({'success': True, 'message': 'Quotation created successfully', 'quotation': quotation}), 201
+        return jsonify({'success': True, 'message': 'Quotation created successfully', 'quotation': quotation}), 200
     else:
         return jsonify({'success': False, 'message': 'Unauthorized access'}), 401
 
@@ -405,7 +390,7 @@ def get_quotations_for_tender(tender_id):
                 quotation['_id'] = str(quotation['_id'])
             return jsonify({'success': True, 'quotations': quotations}), 200
         else:
-            return jsonify({'success': False, 'message': 'Tender not found.'}), 200
+            return jsonify({'success': False, 'message': 'Tender not found.'}), 404
     else:
         return jsonify({'success': False, 'message': 'Not authorized to access tender.'}), 401
 
@@ -423,9 +408,9 @@ def get_quotation_for_tender_and_vendor(tender_id, vendor_id):
                 quotation['_id'] = str(quotation['_id'])
                 return jsonify({'success': True, 'quotation': quotation}), 200
             else:
-                return jsonify({'success': False, 'message': 'Quotation not found for the given tender and vendor.'}), 200
+                return jsonify({'success': False, 'message': 'Quotation not found for the given tender and vendor.'}), 404
         else:
-            return jsonify({'success': False, 'message': 'Tender not found.'}), 200
+            return jsonify({'success': False, 'message': 'Tender not found.'}), 404
     else:
         return jsonify({'success': False, 'message': 'Not authorized to access tender.'}), 401
 
@@ -454,9 +439,9 @@ def update_quotation(quotation_id):
 
             updated_quotation = mongo.db.quotations.find_one({'_id': ObjectId(quotation_id)})
             updated_quotation['_id'] = str(updated_quotation['_id'])  # Convert ObjectId to string
-            return jsonify({'success': True, 'message': 'Quotation updated successfully', 'quotation': updated_quotation})
+            return jsonify({'success': True, 'message': 'Quotation updated successfully', 'quotation': updated_quotation}), 200
         else:
-            return jsonify({'success': False, 'message': 'Quotation not found'})
+            return jsonify({'success': False, 'message': 'Quotation not found'}), 404
     else:
         return jsonify({'success': False, 'message': 'Unauthorized access'}), 401
 

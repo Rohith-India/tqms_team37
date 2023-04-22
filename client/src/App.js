@@ -40,7 +40,7 @@ function App() {
         <Route exact path="/" element={<Login />} />
         <Route exact path="/tenders/:userid" element={<><Tenders /><BackButton /><LogoutButton /></>} />
         <Route exact path="/vendorTenders/:userid" element={<><VendorTenders /><BackButton /><LogoutButton /></>} />
-        <Route exact path="/createTender/:userid" element={<><CreateTender /><BackButton /></>} />
+        <Route exact path="/createTender/:userid" element={<><CreateTender /></>} />
         <Route exact path="/quotations" element={<Quotations/>} />
         <Route exact path="/createQuotation/:userid" element={<CreateQuotation />} />
         <Route exact path="/vendors" element={<Vendors />} />
