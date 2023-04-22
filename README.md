@@ -1,102 +1,102 @@
 # tqms_team37
 
-Onetime Setup:
 
+How to Create a Flask + React Project | Python Backend + React Frontend ?
+
+    https://www.youtube.com/watch?v=7LNl2JlZKHA
+
+
+How to build and start Server:
+
+    Onetime setup:
+    
         mkdir tqms/server
         cd tqms/server
         python3 -m venv venv
-        source venv/bin/activate
+        source venv/bin activate
         pip install Flask
         pip install flask_pymongo
-        pip install flask_bcrypt
+        pip install werkzeug.security
+        pip install flask_jwt_extended
         pip install flask_cors
-        touch app.py
-        update app.py // Not a command
 
-Start Server:
+    Start Server:
 
+        tqms/server
+        Copy https://github.com/Rohith-India/CS4443/blob/main/Team-37/TQMS/server/app.py to tqms/server folder
         export FLASK_APP=app.py
         flask run
+
+How to build and start Client:
+
+    Onetime setup:
+
+        cd tqms/server
+        npx create-react-app client
+        cd client
+        npm install react-router-dom
+        npm install reactstrap
+
+    Start Client:
     
-Client Setup:
+        cd tqms/client
+        Copy file https://github.com/Rohith-India/CS4443/blob/main/Team-37/TQMS/client/src/App.js to tqms/client/src folder
+        npm start
 
-Onetime Setup:
+MongoDB credentials:
 
-            cd tqms
-            npx create-react-app client
-            cd client
-            update App.js // Not a command
+    saisivarohith
+    TQMS123
 
-Start Client:
+    Connect from VSCode:
+    mongodb+srv://saisivarohith:TQMS123@cluster0.s6qo7ga.mongodb.net/test
 
-            npm start
-    
-API Commands:
+    Connect from shell:
+    mongosh "mongodb+srv://cluster0.s6qo7ga.mongodb.net/myFirstDatabase" --apiVersion 1 --username saisivarohith
 
-    User login:
-    curl -X POST -H "Content-Type: application/json" -d '{"email":"admin@example.com","password":"admin_password"}' http://localhost:5000/login
+List of available users:
 
-    {
-
-      "success": "Logged in successfully"
-
-
-    }
-
-
-    User registration:
-    curl -X POST -H "Content-Type: application/json" -d '{"email":"cs20betech11044@iith.ac.in","password":"abc123", "role":"Vendor"}' http://localhost:5000/register
-
-    {
-
-      "success": "User registered successfully"
+user name        password           role
+=========        ========           =====
+admin            a                  admin
+tm               tm                 tender_manager
+v1               v1                 vendor
+v2               v2                 vendor
+v3               v3                 vendor
 
 
-    }
+APIs details:
 
-    Get all users:
-    curl http://localhost:5000/users
+I USER MANAGEMENT
 
-    [
+1. Login:
 
-      {
+    curl -X POST -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>"}' http://localhost:5000/login
 
-        "_id": "6438962775766e0f13848286",
+2. Create a new user:
 
-        "email": "admin@example.com",
-
-        "role": "admin"
-
-      },
-
-      {
-
-        "_id": "643896b875766e0f13848287",
-
-        "email": "es20betech11025@iith.ac.in",
-
-        "user_type": "Vendor"
-
-      },
-
-      {
-
-        "_id": "6438a11cfe0015e03b7847b6",
-
-        "email": "cs20betech11044@iith.ac.in",
-
-        "user_type": "Vendor"
-
-      }
+  curl -X POST -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>","role":"<role>","email":"<email>","contactNo":"<contactNo>","address":"<address>","organization":"<organization>"}' http://localhost:5000/users
 
 
-    ]
+3. Get all users:
 
-    Update an existing User:
-    curl -X PUT -H "Content-Type: application/json" -d '{"email":"cs20betech11044@iith.ac.in","password":"abc123", "user_type":"Tender_Manager"}' http://localhost:5000/users/6438a11cfe0015e03b7847b6
+  curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users
 
-    {
+4. Get a specific user
 
-      "success": "User updated successfully"
+  curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users/<user_id>
 
-    }
+5. Update an existing user
+
+  curl -X PUT http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}'
+
+6. Delete a user
+
+curl -X DELETE http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json'
+
+
+II TENDER MANAGEMENT
+
+
+
+III QUOTATION MANAGEMENT
