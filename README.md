@@ -82,14 +82,15 @@ I USER MANAGEMENT
 
         curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users
 
-4. Get a specific user
+4. Get a specific user:
+
         curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users/<user_id>
 
-5. Update an existing user
+5. Update an existing user:
 
         curl -X PUT http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}'
 
-6. Delete a user
+6. Delete a user:
 
         curl -X DELETE http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json'
 
