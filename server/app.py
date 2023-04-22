@@ -34,36 +34,6 @@ def create_admin_user():
 
 create_admin_user()
 
-# Register a new user
-@app.route('/users', methods=['POST'])
-def register():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    role = request.json.get('role')
-    email = request.json.get('email')
-    contactNo = request.json.get('contactNo')
-    address = request.json.get('address')
-    organization = request.json.get('organization')
-
-    if (role == 'admin' or role == 'tender_manager') and not email.endswith('@iith.ac.in'):
-        return jsonify({'success': False, 'message': 'Invalid email domain for admin or tender_manager role.'}), 400
-
-    existing_user = mongo.db.users.find_one({'username': username})
-    if existing_user is None:
-        hashed_password = generate_password_hash(password, method='sha256')
-        mongo.db.users.insert_one({
-            'username': username,
-            'password': hashed_password,
-            'role': role,
-            'email': email,
-            'contactNo': contactNo,
-            'address': address,
-            'organization': organization,
-        })
-        return jsonify({'success': True}), 200
-    else:
-        return jsonify({'success': False, 'message': 'User already exists.'}), 422
-
 # login
 @app.route('/login', methods=['POST'])
 def login():
@@ -78,8 +48,42 @@ def login():
     else:
         return jsonify({'success': False, 'message': 'Invalid credentials.'}), 400
 
+# Create a new user
+@app.route('/users', methods=['POST'])
+@jwt_required()
+def register():
+    jwt_payload = get_jwt()
+    if 'role' in jwt_payload and jwt_payload['role'] in ['admin']:
+        username = request.json.get('username')
+        password = request.json.get('password')
+        role = request.json.get('role')
+        email = request.json.get('email')
+        contactNo = request.json.get('contactNo')
+        address = request.json.get('address')
+        organization = request.json.get('organization')
+
+        if (role == 'admin' or role == 'tender_manager') and not email.endswith('@iith.ac.in'):
+            return jsonify({'success': False, 'message': 'Invalid email domain for admin or tender_manager role.'}), 400
+
+        existing_user = mongo.db.users.find_one({'username': username})
+        if existing_user is None:
+            hashed_password = generate_password_hash(password, method='sha256')
+            mongo.db.users.insert_one({
+                'username': username,
+                'password': hashed_password,
+                'role': role,
+                'email': email,
+                'contactNo': contactNo,
+                'address': address,
+                'organization': organization,
+            })
+            return jsonify({'success': True}), 200
+        else:
+            return jsonify({'success': False, 'message': 'User already exists.'}), 422
+    else:
+        return jsonify({'success': False, 'message': 'Not authorized to create users.'}), 401
+
 # Get all users
-# Get users by role
 @app.route('/users', methods=['GET'])
 @jwt_required()
 def get_users():
@@ -213,7 +217,7 @@ def get_all_tenders():
     else:
         return jsonify({'success': False, 'message': 'Not authorized to access tenders.'}), 401
 
-# Get a tender
+# Get a specific tender
 @app.route('/tenders/<tender_id>', methods=['GET'])
 @jwt_required()
 def get_tender(tender_id):
