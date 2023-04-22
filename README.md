@@ -88,11 +88,11 @@ I USER MANAGEMENT
 
 5. Update an existing user:
 
-        curl -X PUT http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}'
+        curl -X PUT -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/users/<userid> -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}'
 
 6. Delete a user:
 
-        curl -X DELETE http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json'
+        curl -X DELETE -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' http://localhost:5000/users/<userid>
 
 
 II TENDER MANAGEMENT
