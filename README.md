@@ -71,28 +71,28 @@ I USER MANAGEMENT
 
 1. Login:
 
-    curl -X POST -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>"}' http://localhost:5000/login
+        curl -X POST -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>"}' http://localhost:5000/login
 
 2. Create a new user:
 
-  curl -X POST -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>","role":"<role>","email":"<email>","contactNo":"<contactNo>","address":"<address>","organization":"<organization>"}' http://localhost:5000/users
+    curl -X POST -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" -d '{"username":"<username>","password":"<password>","role":"<role>","email":"<email>","contactNo":"<contactNo>","address":"<address>","organization":"<organization>"}' http://localhost:5000/users
 
 
 3. Get all users:
 
-  curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users
+    curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users
 
 4. Get a specific user
 
-  curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users/<user_id>
+    curl -X GET -H "Authorization: Bearer <access_token>" http://localhost:5000/users/<user_id>
 
 5. Update an existing user
 
-  curl -X PUT http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}'
+    curl -X PUT http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{"username":"<newusername>","password":"<newpassword>","role":"<newrole>","email":"<newemail>","contactNo":"<newcontactNo>","address":"<newaddress>","organization":"<neworganization>"}'
 
 6. Delete a user
 
-curl -X DELETE http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json'
+        curl -X DELETE http://localhost:5000/users/<userid> -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json'
 
 
 II TENDER MANAGEMENT
