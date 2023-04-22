@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 function CreateTender() {
+  const { userid } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ function CreateTender() {
   const [tenderId, setTenderId] = useState(null);
 
   useEffect(() => {
-    const tenderId = new URLSearchParams(location.search).get('id');
+    const tenderId = new URLSearchParams(location.search).get('_id');
     if (tenderId) {
       setIsUpdating(true);
       setTenderId(tenderId);
@@ -34,7 +35,7 @@ function CreateTender() {
         })
         .catch(error => {
           console.log(error);
-          setFormError('An error occurred while fetching the tender data. Please try again later.');
+          setFormError('An error occurred while fetching the tender data. Please try again later.' + error.message);
         });
     }
   }, [location]);
@@ -51,12 +52,13 @@ function CreateTender() {
     try {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       let response;
+      console.log("isUpdating", isUpdating);
       if (isUpdating) {
         response = await axios.put(`http://127.0.0.1:5000/tenders/${tenderId}`, formData, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
       } else {
-        response = await axios.post('http://127.0.0.1:5000/tenders', formData, {
+        response = await axios.post(`http://127.0.0.1:5000/tenders?userid=${userid}`, formData, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
       }
@@ -72,11 +74,15 @@ function CreateTender() {
         setFormError(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      setFormError('An error occurred while creating/updating the tender. Please try again later.');
+      console.log(error.message);
+      setFormError('An error occurred while creating/updating the tender. Please try again later. ' + error.message);
     }
   };
 
+  const handlePopupClose = () => {
+    window.close(); // Close the current window
+  };
+  
   return (
     <div>
       <h1>{isUpdating ? 'Update Tender' : 'Create Tender'}</h1>
@@ -103,6 +109,7 @@ function CreateTender() {
           <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} required />
         </div>
         <button type="submit">{isUpdating ? 'Update' : 'Create'}</button>
+        <button onClick={handlePopupClose}>Close</button>
       </form>
     </div>
   );

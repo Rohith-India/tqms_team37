@@ -23,22 +23,6 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const handleRoleChange = (event) => {
-    setRole(event.target.value);
-  };
-
-  const handleRegisterClick = async () => {
-    const url = 'http://127.0.0.1:5000/register';
-    const data = { username, password, role };
-    const response = await axios.post(url, data);
-
-    if (response.data.success) {
-      // handle successful registration
-    } else {
-      // handle failed registration
-    }
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -51,11 +35,13 @@ function Login() {
       setAccessToken(response.data.access_token);
       setRole(response.data.role);
       // handle successful login
-      if (response.data.role === 'tender_manager') {
-        navigate(`/tenders?accessToken=${response.data.access_token}`);
+      if (response.data.role === 'admin') {
+        navigate(`/users?accessToken=${response.data.access_token}`);
+      } else if (response.data.role === 'tender_manager') {
+        navigate(`/tenders/${response.data.userid}?accessToken=${response.data.access_token}`);
       } else if (response.data.role === 'vendor') {
         console.log(response.data.access_token);
-        navigate(`/vendorTenders/${response.data.username}?accessToken=${response.data.access_token}`);
+        navigate(`/vendorTenders/${response.data.userid}?accessToken=${response.data.access_token}`);
       }
     } else {
       alert(response.data.message);
@@ -64,7 +50,7 @@ function Login() {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Tender and Quotation Management System</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -76,20 +62,8 @@ function Login() {
           <input type="password" value={password} onChange={handlePasswordChange} />
         </label>
         <br />
-        <label>
-          Role:
-          <select value={role} onChange={handleRoleChange}>
-            <option value="admin">Admin</option>
-            <option value="tender_manager">Tender Manager</option>
-            <option value="vendor">Vendor</option>
-          </select>
-        </label>
-        <br />
         <button type="submit">Login</button>
       </form>
-      <br />
-      <button onClick={handleRegisterClick}>Register</button>
-      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }
