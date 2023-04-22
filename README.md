@@ -125,8 +125,7 @@ II TENDER MANAGEMENT
 
 7. Update an existing tender:
 
-        curl -X PUT  -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{ "title": "<new_title>", "description": "<new_description>", "start_date": "<new_start_date>", "deadline": "<new_deadline>",
-    "location": "<new_location>", "status": "<new_status>" }' http://localhost:5000/tenders/<tender_id>
+        curl -X PUT  -H 'Authorization: Bearer <access_token>' -H 'Content-Type: application/json' -d '{ "title": "<new_title>", "description": "<new_description>", "start_date": "<new_start_date>", "deadline": "<new_deadline>", "location": "<new_location>", "status": "<new_status>" }' http://localhost:5000/tenders/<tender_id>
 
 
 III QUOTATION MANAGEMENT
