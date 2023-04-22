@@ -56,13 +56,13 @@ MongoDB credentials:
 
 List of available users:
 
-user name        password           role
-=========        ========           =====
-admin            a                  admin
-tm               tm                 tender_manager
-v1               v1                 vendor
-v2               v2                 vendor
-v3               v3                 vendor
+        user name        password           role
+        =========        ========           =====
+        admin            a                  admin
+        tm               tm                 tender_manager
+        v1               v1                 vendor
+        v2               v2                 vendor
+        v3               v3                 vendor
 
 
 APIs details:
