@@ -5,6 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
 from flask_cors import CORS
 from bson import ObjectId
+import os
+from werkzeug.utils import secure_filename, send_from_directory
 
 app = Flask(__name__)
 
@@ -16,6 +18,7 @@ mongo = PyMongo(app)
 jwt = JWTManager(app)
 #CORS(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['UPLOAD_FOLDER'] = '/tmp/'
 
 # Default admin user
 def create_admin_user():
@@ -344,18 +347,18 @@ def update_tender(tender_id):
 @app.route('/quotations', methods=['POST'])
 @jwt_required()
 def create_quotation():
+    print('create_quotation')
     jwt_payload = get_jwt()
     if 'role' in jwt_payload and jwt_payload['role'] == 'vendor':
         # Create new quotation
         tender_id = request.args.get('tender_id')
         vendor_id = request.args.get('userid')
         vendor_name = jwt_payload['sub']
-        print('vendor_name: ', vendor_name)
-        amount = request.json.get('amount')
-        currency = request.json.get('currency')
-        validity_days = request.json.get('validity_days')
-        description = request.json.get('description')
-
+        amount = request.form.get('amount')
+        currency = request.form.get('currency')
+        validity_days = request.form.get('validity_days')
+        description = request.form.get('description')
+        file = request.files['file']
         if not tender_id or not amount or not currency or not validity_days:
             return jsonify({'success': False, 'message': 'Missing required fields'}), 400
         
@@ -368,18 +371,34 @@ def create_quotation():
         if not tender:
             return jsonify({'success': False, 'message': 'Tender not found'}), 404
         
-        quotation = {
-            'tender_id': tender_id,
-            'vendor_id': vendor_id,
-            'vendor_name': vendor_name,
-            'amount': amount,
-            'currency': currency,
-            'validity_days': validity_days,
-            'description': description,
-            'status': 'submitted'
-        }
+        if file:
+            quotation = {
+                'tender_id': tender_id,
+                'vendor_id': vendor_id,
+                'vendor_name': vendor_name,
+                'amount': amount,
+                'currency': currency,
+                'validity_days': validity_days,
+                'description': description,
+                'status': 'submitted',
+                'file_name': file.filename
+            }
+        else:
+            quotation = {
+                'tender_id': tender_id,
+                'vendor_id': vendor_id,
+                'vendor_name': vendor_name,
+                'amount': amount,
+                'currency': currency,
+                'validity_days': validity_days,
+                'description': description,
+                'status': 'submitted',
+            }
         mongo.db.quotations.insert_one(quotation)
         quotation['_id'] = str(quotation['_id'])  # Convert ObjectId to string
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return jsonify({'success': True, 'message': 'Quotation created successfully', 'quotation': quotation}), 200
     else:
         return jsonify({'success': False, 'message': 'Unauthorized access'}), 401
@@ -431,10 +450,11 @@ def update_quotation(quotation_id):
         quotation = mongo.db.quotations.find_one({'_id': ObjectId(quotation_id)})
         if quotation:
             # Update quotation details
-            amount = request.json.get('amount')
-            currency = request.json.get('currency')
-            validity_days = request.json.get('validity_days')
-            description = request.json.get('description')
+            amount = request.form.get('amount')
+            currency = request.form.get('currency')
+            validity_days = request.form.get('validity_days')
+            description = request.form.get('description')
+            file = request.files['file']
             if amount:
                 mongo.db.quotations.update_one({'_id': ObjectId(quotation_id)}, {'$set': {'amount': amount}})
             if currency:
@@ -443,9 +463,14 @@ def update_quotation(quotation_id):
                 mongo.db.quotations.update_one({'_id': ObjectId(quotation_id)}, {'$set': {'validity_days': validity_days}})
             if description:
                 mongo.db.quotations.update_one({'_id': ObjectId(quotation_id)}, {'$set': {'description': description}})
+            if file:
+                mongo.db.quotations.update_one({'_id': ObjectId(quotation_id)}, {'$set': {'file_name': file.filename}})
 
             updated_quotation = mongo.db.quotations.find_one({'_id': ObjectId(quotation_id)})
             updated_quotation['_id'] = str(updated_quotation['_id'])  # Convert ObjectId to string
+            if file:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return jsonify({'success': True, 'message': 'Quotation updated successfully', 'quotation': updated_quotation}), 200
         else:
             return jsonify({'success': False, 'message': 'Quotation not found'}), 404
@@ -493,3 +518,15 @@ def delete_quotation(tender_id, vendor_id):
             return jsonify({'success': False, 'message': 'Quotation not found'}), 404
     else:
         return jsonify({'success': False, 'message': 'You are not authorized to delete this quotation'}), 401
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return 'File uploaded successfully!'
+
+@app.route('/uploads/<filename>', methods=['GET'])
+def download_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename, environ=request.environ, as_attachment=True)

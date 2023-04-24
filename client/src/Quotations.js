@@ -80,6 +80,7 @@ function Quotations() {
                         <th>Amount</th>
                         <th>Currency</th>
                         <th>Status</th>
+                        <th>File Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,6 +92,7 @@ function Quotations() {
                             <td>{quotation.amount}</td>
                             <td>{quotation.currency}</td>
                             <td>{quotation.status}</td>
+                            <td>{quotation.file_name ? <a href={`http://127.0.0.1:5000/uploads/${quotation.file_name}`} target="_blank">{quotation.file_name}</a> : ""}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -98,5 +100,4 @@ function Quotations() {
         </div>
     );
 }
-
 export default Quotations;

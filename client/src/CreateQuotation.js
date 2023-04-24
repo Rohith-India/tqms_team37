@@ -15,6 +15,7 @@ function CreateQuotation() {
   const [formError, setFormError] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [quotationId, setQuotationId] = useState(null);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -56,14 +57,19 @@ function CreateQuotation() {
     try {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       const tender_id = new URLSearchParams(location.search).get('tender_id');
-      console.log(tender_id)
+      const data = new FormData();
+      data.append('amount', formData.amount);
+      data.append('currency', formData.currency);
+      data.append('validity_days', formData.validity_days);
+      data.append('description', formData.description);
+      data.append('file', file); // Add the file to the form data
       let response;
       if (isUpdating) {
-        response = await axios.put(`http://127.0.0.1:5000/quotations/${quotationId}`, formData, {
+        response = await axios.put(`http://127.0.0.1:5000/quotations/${quotationId}`, data, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
       } else {
-        response = await axios.post(`http://127.0.0.1:5000/quotations?tender_id=${tender_id}&userid=${userid}`, formData, {
+        response = await axios.post(`http://127.0.0.1:5000/quotations?tender_id=${tender_id}&userid=${userid}`, data, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
       }
@@ -84,11 +90,16 @@ function CreateQuotation() {
       setFormError('An error occurred while creating/updating the quotation. Please try again later.');
     }
   };
+  
 
   const handlePopupClose = () => {
     window.close(); // Close the current window
   };
   
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
   return (
     <div>
       <h1>{isUpdating ? 'Update Quotation' : 'Create Quotation'}</h1>
@@ -109,6 +120,10 @@ function CreateQuotation() {
         <div>
           <label htmlFor="description">Description</label>
           <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+        </div>
+        <div>
+          <label htmlFor="file">Upload File</label>
+          <input type="file" id="file" name="file" onChange={handleFileChange} />
         </div>
         <button type="submit">{isUpdating ? 'Update' : 'Create'}</button>
         <button onClick={handlePopupClose}>Close</button>
