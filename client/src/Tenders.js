@@ -70,6 +70,27 @@ function Tenders() {
     }
   };
   
+  const handleCloseTender = async () => {
+    if (selectedTenders.length === 1) {
+      const accessToken = new URLSearchParams(location.search).get('accessToken');
+      const response = await axios.put(`http://127.0.0.1:5000/tenders/close/${selectedTenders[0]._id}`, { status: 'closed' }, { headers: { Authorization: `Bearer ${accessToken}` }});
+      if (response.data.success) {
+        setTenders(tenders.map((tender) => {
+          if (tender._id === selectedTenders[0]._id) {
+            return {
+              ...tender,
+              status: 'closed'
+            }
+          }
+          return tender;
+        }));
+        setSelectedTenders([]);
+      } else {
+        console.log(response.data.message);
+      }
+    }
+  };
+
   const isOneRowSelected = selectedTenders.length === 1; // check if one row is selected
 
   return (
@@ -80,6 +101,7 @@ function Tenders() {
       <button onClick={handleDeleteTender} disabled={!isOneRowSelected}>Delete Tender</button>
       <button onClick={handleAssignVendors} disabled={!isOneRowSelected}>Assign Vendors</button>
       <button onClick={handleViewQuotations} disabled={!isOneRowSelected}>View Quotations</button>
+      <button onClick={handleCloseTender} disabled={!isOneRowSelected}>Close Tender</button>
       <table border="2">
         <thead>
           <tr>

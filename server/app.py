@@ -530,3 +530,25 @@ def upload_file():
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename, environ=request.environ, as_attachment=True)
+
+# Close a tender
+@app.route('/tenders/close/<tender_id>', methods=['PUT'])
+@jwt_required()
+def close_tender(tender_id):
+    jwt_payload = get_jwt()
+    if 'role' in jwt_payload and jwt_payload['role'] == 'tender_manager':
+        tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
+        if tender is None:
+            return jsonify({'success': False, 'message': 'Tender not found.'}), 404
+        if tender['status'] != 'Open':
+            return jsonify({'success': False, 'message': 'Tender already closed.'}), 422
+        result = mongo.db.tenders.update_one(
+            {'_id': ObjectId(tender_id)},
+            {'$set': {'status': 'Closed'}}
+        )
+        if result.modified_count == 1:
+            return jsonify({'success': True, 'message': 'Tender closed successfully.'}), 200
+        else:
+            return jsonify({'success': False, 'message': 'Failed to close tender.'}), 500
+    else:
+        return jsonify({'success': False, 'message': 'Not authorized to close tender.'}), 401
