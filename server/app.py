@@ -164,6 +164,9 @@ def update_user(userid):
 def delete_user(userid):
     jwt_payload = get_jwt()
     if 'role' in jwt_payload and jwt_payload['role'] == 'admin':
+        user = mongo.db.users.find_one({'_id': ObjectId(userid)})
+        if user['username'] == 'admin':
+            return jsonify({'success': False, 'message': 'The admin user cannot be deleted.'}), 400
         result = mongo.db.users.delete_one({'_id': ObjectId(userid)})
         if result.deleted_count == 1:
             return jsonify({'success': True}), 200
