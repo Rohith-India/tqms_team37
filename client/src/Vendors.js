@@ -53,10 +53,15 @@ function Vendors() {
       });
   };
 
+  const handlePopupClose = () => {
+      window.close(); // Close the current window
+  };
+
   return (
     <div>
       <h1>Vendors</h1>
       <button onClick={handleAssignClick}>Assign</button>
+      <button onClick={handlePopupClose}>Close</button>
       <table border="2">
         <thead>
           <tr>
