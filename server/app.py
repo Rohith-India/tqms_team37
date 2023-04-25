@@ -244,6 +244,14 @@ def get_tender(tender_id):
 def delete_tender(tender_id):
     jwt_payload = get_jwt()
     if 'role' in jwt_payload and jwt_payload['role'] in ['admin', 'tender_manager']:
+        tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
+        if not tender:
+            return jsonify({'success': False, 'message': 'Tender not found.'}), 404
+
+        assigned_vendors = tender.get('assigned_vendors', [])
+        if assigned_vendors:
+            return jsonify({'success': False, 'message': 'Cannot delete tender as it is assigned to one or more vendors.'}), 400
+
         result = mongo.db.tenders.delete_one({'_id': ObjectId(tender_id)})
         if result.deleted_count == 1:
             return jsonify({'success': True}), 200
@@ -519,6 +527,7 @@ def delete_quotation(tender_id, vendor_id):
     else:
         return jsonify({'success': False, 'message': 'You are not authorized to delete this quotation'}), 401
 
+# Upload a file
 @app.route('/upload', methods=['POST'])
 def upload_file():
     file = request.files['file']
@@ -526,6 +535,7 @@ def upload_file():
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     return 'File uploaded successfully!'
 
+# retrieve a file
 @app.route('/uploads/<filename>', methods=['GET'])
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],

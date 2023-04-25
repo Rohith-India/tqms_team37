@@ -39,14 +39,19 @@ function Tenders() {
   const handleDeleteTender = async () => {
     if (selectedTenders.length === 1) { // only enable the button if one row is selected
       const accessToken = new URLSearchParams(location.search).get('accessToken');
-      const response = await axios.delete(`http://127.0.0.1:5000/tenders/${selectedTenders[0]._id}`, { headers: { Authorization: `Bearer ${accessToken}` }});
-      alert(response.data.message);
-      if (response.data.success) {
-        setTenders(tenders.filter((tender) => tender.id !== selectedTenders[0].id));
-        setSelectedTenders([]);
-        //window.location.reload()
-      } else {
-        console.log(response.data.message);
+      try {
+        const response = await axios.delete(`http://127.0.0.1:5000/tenders/${selectedTenders[0]._id}`, { headers: { Authorization: `Bearer ${accessToken}` }});
+        alert(response.data.message);
+        if (response.data.success) {
+          setTenders(tenders.filter((tender) => tender.id !== selectedTenders[0].id));
+          setSelectedTenders([]);
+          //window.location.reload()
+        } else {
+          console.log(response.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while deleting the tender. ' + error);
       }
     }
   };
