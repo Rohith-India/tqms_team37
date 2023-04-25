@@ -11,7 +11,7 @@ function Vendors() {
 
   useEffect(() => {
     const accessToken = new URLSearchParams(location.search).get('accessToken');
-    axios.get(`http://127.0.0.1:5000/users?role=vendor`, { headers: { Authorization: `Bearer ${accessToken}` }})
+    axios.get(`http://127.0.0.1:5000/users?role=vendor`, { headers: { Authorization: `Bearer ${accessToken}` } })
       .then(response => {
         const tenderAssignedVendors = new URLSearchParams(location.search).get('assigned_vendors') || '';
         const assignedVendors = tenderAssignedVendors.split(',');
@@ -31,13 +31,13 @@ function Vendors() {
   const handleCheckboxChange = (event) => {
     const vendorId = event.target.value;
     const isChecked = event.target.checked;
-    
+
     if (isChecked) {
       setSelectedVendors([...selectedVendors, vendorId]);
     } else {
       setSelectedVendors(selectedVendors.filter(id => id !== vendorId));
     }
-    
+
     // Update the tenderAssignedVendors state
     if (isChecked) {
       setTenderAssignedVendors([...tenderAssignedVendors, vendorId]);
@@ -45,7 +45,7 @@ function Vendors() {
       setTenderAssignedVendors(tenderAssignedVendors.filter(id => id !== vendorId));
     }
   };
-  
+
   const handleAssignClick = () => {
     const tender_id = new URLSearchParams(location.search).get('tender_id');
     const accessToken = new URLSearchParams(location.search).get('accessToken');
@@ -53,7 +53,7 @@ function Vendors() {
     axios.post('http://127.0.0.1:5000/tenders/assign', {
       tender_id: tender_id,
       vendor_ids: selectedVendors
-    }, { headers: { Authorization: `Bearer ${accessToken}` }})
+    }, { headers: { Authorization: `Bearer ${accessToken}` } })
       .then(response => {
         alert(response.data.message);
         if (response.data.status === 'success') {
@@ -69,8 +69,8 @@ function Vendors() {
   };
 
   const handlePopupClose = () => {
-      window.close(); // Close the current window
-      window.opener.location.reload(); // Refresh the parent window
+    window.close(); // Close the current window
+    window.opener.location.reload(); // Refresh the parent window
   };
 
   return (
@@ -100,16 +100,6 @@ function Vendors() {
           ))}
         </tbody>
       </table>
-      {selectedVendors.length > 0 &&
-        <div>
-          <p>Selected vendors:</p>
-          <ul>
-            {selectedVendors.map(vendorId => (
-              <li key={vendorId}>{vendors.find(vendor => vendor._id === vendorId).username}</li>
-            ))}
-          </ul>
-        </div>
-      }
     </div>
   );
 }

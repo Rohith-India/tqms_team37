@@ -61,7 +61,11 @@ function Tenders() {
     if (selectedTenders.length == 1 && selectedTenders[0].status != 'Closed') {
       const tender = selectedTenders[0];
       const accessToken = new URLSearchParams(location.search).get('accessToken');
-      const assignedVendors = tender.assigned_vendors.join(',');
+      console.log(tender.assigned_vendors)
+      const assignedVendors=null
+      if(tender.assigned_vendors) {
+        assignedVendors = tender.assigned_vendors.join(',');
+      }
       const url = `/vendors?tender_id=${tender._id}&accessToken=${accessToken}&assigned_vendors=${assignedVendors}`;
       window.open(url, '_blank', 'width=600,height=600');    }
   };
