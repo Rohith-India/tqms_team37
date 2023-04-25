@@ -29,7 +29,7 @@ function Quotations() {
             const accessToken = new URLSearchParams(location.search).get('accessToken');
             console.log(selectedQuotation._id)
             const response = await axios.put(`http://127.0.0.1:5000/quotations/${selectedQuotation._id}/decision`, { status: "accepted" }, { headers: { Authorization: `Bearer ${accessToken}` } });
-            console.log(response)
+            alert(response.data.message);
             if (response.data.success) {
                 setSelectedQuotation(null);
                 window.location.reload()
@@ -44,6 +44,7 @@ function Quotations() {
             const accessToken = new URLSearchParams(location.search).get('accessToken');
             console.log(selectedQuotation._id)
             const response = await axios.put(`http://127.0.0.1:5000/quotations/${selectedQuotation._id}/decision`, { status: "rejected" }, { headers: { Authorization: `Bearer ${accessToken}` } });
+            alert(response.data.message);
             if (response.data.success) {
                 setSelectedQuotation(null);
                 window.location.reload()

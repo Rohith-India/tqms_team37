@@ -25,10 +25,8 @@ function CreateQuotation() {
       setIsUpdating(true);
       // Fetch the existing quotation data and pre-populate the form
       const accessToken = new URLSearchParams(location.search).get('accessToken');
-      console.log(accessToken)
       axios.get(`http://127.0.0.1:5000/tenders/${tenderId}/quotations/${userid}`, { headers: { Authorization: `Bearer ${accessToken}` } })
         .then(response => {
-          console.log(response.data.quotation)
           if (response.data.success) {
             const { amount, currency, validity_days, description } = response.data.quotation;
             setQuotationId(response.data.quotation._id);
@@ -40,7 +38,7 @@ function CreateQuotation() {
         })
         .catch(error => {
           console.log(error);
-          setFormError('An error occurred while fetching the quotation data. Please try again later.');
+          setFormError('An error occurred while fetching the quotation data. Please try again later.'+error);
         });
     }
   }, [location]);
@@ -73,7 +71,6 @@ function CreateQuotation() {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
       }
-      console.log(response.data.success)
       if (response.data.success) {
         if (isUpdating) {
           alert('Quotation updated successfully!');
@@ -83,11 +80,12 @@ function CreateQuotation() {
         window.close();
         window.opener.location.reload();
       } else {
+        alert(response.data.message);
         setFormError(response.data.message);
       }
     } catch (error) {
       console.log(error);
-      setFormError('An error occurred while creating/updating the quotation. Please try again later.');
+      setFormError('An error occurred while creating/updating the quotation. Please try again later.'+error);
     }
   };
   

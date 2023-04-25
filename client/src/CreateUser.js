@@ -80,6 +80,7 @@ function CreateUser() {
         window.close();
         window.opener.location.reload();
       } else {
+        alert(response.data.message);
         setFormError(response.data.message);
       }
     } catch (error) {

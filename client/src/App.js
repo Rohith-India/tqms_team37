@@ -27,6 +27,7 @@ function LogoutButton() {
     localStorage.removeItem('token');
     // Perform logout logic here (e.g. clear session, redirect to login page)
     navigate('/');
+    alert('Logged out from the system successfully.')
   }
 
   return <button onClick={handleLogout}>Logout</button>;

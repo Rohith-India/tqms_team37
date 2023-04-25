@@ -54,6 +54,7 @@ function VendorTenders() {
     const accessToken = new URLSearchParams(location.search).get('accessToken');
     axios.delete(`http://127.0.0.1:5000/tenders/${selectedTenders[0]._id}/quotations/${userid}`, { headers: { Authorization: `Bearer ${accessToken}` } })
         .then(response => {
+          alert(response.data.message);
           if (response.data.success) {
             console.log(response.data.message);
             window.location.reload()

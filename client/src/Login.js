@@ -10,11 +10,6 @@ function Login() {
   const [accessToken, setAccessToken] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setLoggedIn(false);
-  };
-
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };

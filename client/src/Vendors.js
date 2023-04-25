@@ -41,6 +41,7 @@ function Vendors() {
       vendor_ids: selectedVendors
     }, { headers: { Authorization: `Bearer ${accessToken}` }})
       .then(response => {
+        alert(response.data.message);
         if (response.data.status === 'success') {
           console.log(response.data.message);
           setSelectedVendors([]);
