@@ -248,6 +248,9 @@ def delete_tender(tender_id):
         if not tender:
             return jsonify({'success': False, 'message': 'Tender not found.'}), 404
 
+        if tender.get('status') == 'Closed':
+            return jsonify({'success': False, 'message': 'Cannot delete a closed tender.'}), 400
+
         assigned_vendors = tender.get('assigned_vendors', [])
         if assigned_vendors:
             return jsonify({'success': False, 'message': 'Cannot delete tender as it is assigned to one or more vendors.'}), 400
@@ -275,6 +278,9 @@ def assign_tender():
         if not tender:
             return jsonify({'status': 'fail', 'message': 'Tender not found'}), 404
 
+        if tender.get('status') == 'Closed':
+            return jsonify({'success': False, 'message': 'Cannot edit a closed tender.'}), 400
+        
         vendors = mongo.db.users.find({'username': {'$in': vendor_ids}})
 
         if not vendors:
@@ -321,6 +327,9 @@ def update_tender(tender_id):
     if 'role' in jwt_payload and jwt_payload['role'] == 'tender_manager':
         tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
         if tender:
+            if tender.get('status') == 'Closed':
+                return jsonify({'success': False, 'message': 'Cannot edit a closed tender.'}), 400
+    
             # Update tender details
             title = request.json.get('title')
             description = request.json.get('description')
@@ -368,6 +377,13 @@ def create_quotation():
         file = request.files.get('file')
         if not tender_id or not amount or not currency or not validity_days:
             return jsonify({'success': False, 'message': 'Missing required fields'}), 400
+        
+        tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
+        if tender:
+            if tender.get('status') == 'Closed':
+                return jsonify({'success': False, 'message': 'Cannot create a Quotation on a closed tender.'}), 400
+        else:
+            return jsonify({'success': False, 'message': 'Tender not found'}), 404
         
         # Check if vendor has already submitted a quotation for this tender
         existing_quotation = mongo.db.quotations.find_one({'tender_id': tender_id, 'vendor_id': vendor_id})
@@ -454,6 +470,13 @@ def update_quotation(quotation_id):
     jwt_payload = get_jwt()
     vendor_id = request.args.get('userid')
     if 'role' in jwt_payload and jwt_payload['role'] == 'vendor':
+        tender_id = request.args.get('tender_id')
+        tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
+        if tender:
+            if tender.get('status') == 'Closed':
+                return jsonify({'success': False, 'message': 'Cannot create a Quotation on a closed tender.'}), 400
+        else:
+            return jsonify({'success': False, 'message': 'Tender not found'}), 404
         quotation = mongo.db.quotations.find_one({'_id': ObjectId(quotation_id)})
         if quotation:
             # Update quotation details
@@ -494,6 +517,13 @@ def decide_quotation(quotation_id):
         if quotation:
             decision = request.json.get('status')
             tender_id = quotation['tender_id']
+            tender = mongo.db.tenders.find_one({'_id': ObjectId(tender_id)})
+            if tender:
+                if tender.get('status') == 'Closed':
+                    return jsonify({'success': False, 'message': 'Cannot mofify the Quotation status for a closed tender.'}), 400
+            else:
+                return jsonify({'success': False, 'message': 'Tender not found'}), 404
+    
             if decision and decision in ['accepted', 'rejected']:
                 if decision == 'accepted':
                     # update current quotation to accepted

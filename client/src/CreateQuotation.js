@@ -38,7 +38,7 @@ function CreateQuotation() {
         })
         .catch(error => {
           console.log(error);
-          setFormError('An error occurred while fetching the quotation data. Please try again later.'+error);
+          setFormError('An error occurred while fetching the quotation data. '+error);
         });
     }
   }, [location]);
@@ -63,7 +63,7 @@ function CreateQuotation() {
       data.append('file', file); // Add the file to the form data
       let response;
       if (isUpdating) {
-        response = await axios.put(`http://127.0.0.1:5000/quotations/${quotationId}`, data, {
+        response = await axios.put(`http://127.0.0.1:5000/quotations/${quotationId}?tender_id=${tender_id}&`, data, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
       } else {
@@ -85,7 +85,7 @@ function CreateQuotation() {
       }
     } catch (error) {
       console.log(error.response.data.message);
-      setFormError('An error occurred while creating/updating the quotation. Please try again later.'+error.response.data.message);
+      setFormError('An error occurred while creating/updating the quotation. '+error.response.data.message);
     }
   };
   

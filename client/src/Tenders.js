@@ -36,7 +36,7 @@ function Tenders() {
   };
 
   const handleDeleteTender = async () => {
-    if (selectedTenders.length === 1) { // only enable the button if one row is selected
+    if (selectedTenders.length === 1 && selectedTenders[0].status != 'Closed') { // only enable the button if one row is selected
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       const response = null;
       try {
@@ -58,7 +58,7 @@ function Tenders() {
 
   const handleAssignVendors = () => {
     // do something with the selected tender
-    if (selectedTenders.length == 1) {
+    if (selectedTenders.length == 1 && selectedTenders[0].status != 'Closed') {
       const tender = selectedTenders[0];
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       const assignedVendors = tender.assigned_vendors.join(',');
@@ -67,8 +67,10 @@ function Tenders() {
   };
 
   const handleModifyTender = () => {
-    const accessToken = new URLSearchParams(location.search).get('accessToken');
-    window.open(`/createTender/${userid}?_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, selectedTenders[0], 'width=600,height=600');
+    if(selectedTenders.length == 1 && selectedTenders[0].status != 'Closed') {
+      const accessToken = new URLSearchParams(location.search).get('accessToken');
+      window.open(`/createTender/${userid}?_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, selectedTenders[0], 'width=600,height=600');
+    }
   };
 
   const handleViewQuotations = async () => {
@@ -79,7 +81,7 @@ function Tenders() {
   };
   
   const handleCloseTender = async () => {
-    if (selectedTenders.length === 1) {
+    if (selectedTenders.length === 1 && selectedTenders[0].status != 'Closed') {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       const response = await axios.put(`http://127.0.0.1:5000/tenders/close/${selectedTenders[0]._id}`, { status: 'closed' }, { headers: { Authorization: `Bearer ${accessToken}` }});
       alert(response.data.message);
@@ -106,11 +108,11 @@ function Tenders() {
     <div>
       <h1>Tenders</h1>
       <button onClick={handleNewTenderClick}>Create a New Tender</button>
-      <button onClick={handleModifyTender} disabled={!isOneRowSelected}>Modify Tender</button>
-      <button onClick={handleDeleteTender} disabled={!isOneRowSelected}>Delete Tender</button>
-      <button onClick={handleAssignVendors} disabled={!isOneRowSelected}>Assign Vendors</button>
+      <button onClick={handleModifyTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Modify Tender</button>
+      <button onClick={handleDeleteTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Delete Tender</button>
+      <button onClick={handleAssignVendors} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Assign Vendors</button>
       <button onClick={handleViewQuotations} disabled={!isOneRowSelected}>View Quotations</button>
-      <button onClick={handleCloseTender} disabled={!isOneRowSelected}>Close Tender</button>
+      <button onClick={handleCloseTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Close Tender</button>
       <table border="2">
         <thead>
           <tr>

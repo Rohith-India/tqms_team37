@@ -26,33 +26,46 @@ function Quotations() {
 
     const handleAcceptQuotation = async () => {
         if (selectedQuotation) {
-            const accessToken = new URLSearchParams(location.search).get('accessToken');
-            console.log(selectedQuotation._id)
+          const accessToken = new URLSearchParams(location.search).get('accessToken');
+          console.log(selectedQuotation._id);
+          try {
             const response = await axios.put(`http://127.0.0.1:5000/quotations/${selectedQuotation._id}/decision`, { status: "accepted" }, { headers: { Authorization: `Bearer ${accessToken}` } });
             alert(response.data.message);
             if (response.data.success) {
-                setSelectedQuotation(null);
-                window.location.reload()
+              setSelectedQuotation(null);
+              window.location.reload()
             } else {
-                console.log(response.data.message);
+              console.log(response.data.message);
             }
+          } catch (error) {
+            alert('An error occurred while accepting the quotation.'+error.response.data.message);
+          }
         }
-    };
+      };
 
-    const handleRejectQuotation = async () => {
+      const handleRejectQuotation = async () => {
         if (selectedQuotation) {
-            const accessToken = new URLSearchParams(location.search).get('accessToken');
-            console.log(selectedQuotation._id)
-            const response = await axios.put(`http://127.0.0.1:5000/quotations/${selectedQuotation._id}/decision`, { status: "rejected" }, { headers: { Authorization: `Bearer ${accessToken}` } });
-            alert(response.data.message);
-            if (response.data.success) {
-                setSelectedQuotation(null);
-                window.location.reload()
+          const accessToken = new URLSearchParams(location.search).get('accessToken');
+          console.log(selectedQuotation._id);
+          try {
+            const response = await axios.put(
+              `http://127.0.0.1:5000/quotations/${selectedQuotation._id}/decision`,
+              { status: 'rejected' },
+              { headers: { Authorization: `Bearer ${accessToken}` } }
+            );
+            if (response.status === 200 && response.data.success) {
+              setSelectedQuotation(null);
+              window.location.reload();
             } else {
-                console.log(response.data.message);
+              console.log(response.data.message);
+              alert('There was an error rejecting the quotation.');
             }
+          } catch (error) {
+            alert('There was an error rejecting the quotation.'+error.response.data.message);
+          }
         }
-    };
+      };
+      
 
     const handleSelectQuotation = (e, quotation) => {
         if (e.target.checked) {
