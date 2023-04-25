@@ -288,17 +288,15 @@ def assign_tender():
                 vendor['assigned_tenders'].append(tender_id)
             mongo.db.users.update_one({'_id': vendor['_id']}, {'$set': {'assigned_tenders': vendor['assigned_tenders']}})
 
-        # Add vendor ID to tender's assigned_vendors list
-        if 'assigned_vendors' not in tender:
-            tender['assigned_vendors'] = []
+        # Remove existing assigned_vendors and add latest vendor IDs to tender's assigned_vendors list
+        mongo.db.tenders.update_one({'_id': tender['_id']}, {'$set': {'assigned_vendors': []}})
         for vendor_id in vendor_ids:
-            if vendor_id not in tender['assigned_vendors']:
-                tender['assigned_vendors'].append(vendor_id)
-        mongo.db.tenders.update_one({'_id': tender['_id']}, {'$set': {'assigned_vendors': tender['assigned_vendors']}})
+            mongo.db.tenders.update_one({'_id': tender['_id']}, {'$addToSet': {'assigned_vendors': vendor_id}})
 
         return jsonify({'status': 'success', 'message': 'Tender assigned to vendors successfully'}), 200
     else:
         return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
+
 
 # Get all tenders assigned to a vendor
 @app.route('/tenders/vendors/<vendor_id>', methods=['GET'])
@@ -366,7 +364,8 @@ def create_quotation():
         currency = request.form.get('currency')
         validity_days = request.form.get('validity_days')
         description = request.form.get('description')
-        file = request.files['file']
+        #file = request.files['file']
+        file = request.files.get('file')
         if not tender_id or not amount or not currency or not validity_days:
             return jsonify({'success': False, 'message': 'Missing required fields'}), 400
         
@@ -462,7 +461,7 @@ def update_quotation(quotation_id):
             currency = request.form.get('currency')
             validity_days = request.form.get('validity_days')
             description = request.form.get('description')
-            file = request.files['file']
+            file = request.files.get('file')
             if amount:
                 mongo.db.quotations.update_one({'_id': ObjectId(quotation_id)}, {'$set': {'amount': amount}})
             if currency:

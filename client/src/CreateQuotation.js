@@ -84,8 +84,8 @@ function CreateQuotation() {
         setFormError(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      setFormError('An error occurred while creating/updating the quotation. Please try again later.'+error);
+      console.log(error.response.data.message);
+      setFormError('An error occurred while creating/updating the quotation. Please try again later.'+error.response.data.message);
     }
   };
   

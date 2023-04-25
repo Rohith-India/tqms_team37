@@ -13,7 +13,6 @@ function Tenders() {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       const response = await axios.get(`http://127.0.0.1:5000/tenders?userid=${userid}`, { headers: { Authorization: `Bearer ${accessToken}` }});
       if (response.data.success) {
-        console.log(response.data.tenders)
         setTenders(response.data.tenders);
       } else {
         console.log(response.data.message);
@@ -39,8 +38,9 @@ function Tenders() {
   const handleDeleteTender = async () => {
     if (selectedTenders.length === 1) { // only enable the button if one row is selected
       const accessToken = new URLSearchParams(location.search).get('accessToken');
+      const response = null;
       try {
-        const response = await axios.delete(`http://127.0.0.1:5000/tenders/${selectedTenders[0]._id}`, { headers: { Authorization: `Bearer ${accessToken}` }});
+         response = await axios.delete(`http://127.0.0.1:5000/tenders/${selectedTenders[0]._id}`, { headers: { Authorization: `Bearer ${accessToken}` }});
         alert(response.data.message);
         if (response.data.success) {
           setTenders(tenders.filter((tender) => tender.id !== selectedTenders[0].id));
@@ -50,8 +50,8 @@ function Tenders() {
           console.log(response.data.message);
         }
       } catch (error) {
-        console.error(error);
-        alert('An error occurred while deleting the tender. ' + error);
+        console.error(error.response.data.message);
+        alert(error.response.data.message);
       }
     }
   };
@@ -59,9 +59,11 @@ function Tenders() {
   const handleAssignVendors = () => {
     // do something with the selected tender
     if (selectedTenders.length == 1) {
+      const tender = selectedTenders[0];
       const accessToken = new URLSearchParams(location.search).get('accessToken');
-      window.open(`/vendors?tender_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, '_blank', 'width=600,height=600');
-    }
+      const assignedVendors = tender.assigned_vendors.join(',');
+      const url = `/vendors?tender_id=${tender._id}&accessToken=${accessToken}&assigned_vendors=${assignedVendors}`;
+      window.open(url, '_blank', 'width=600,height=600');    }
   };
 
   const handleModifyTender = () => {
