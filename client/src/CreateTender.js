@@ -34,8 +34,7 @@ function CreateTender() {
           }
         })
         .catch(error => {
-          console.log(error);
-          setFormError('An error occurred while fetching the tender data. Please try again later.' + error.message);
+          setFormError('An error occurred while fetching the tender data. Please try again later.' + error.response.data.message);
         });
     }
   }, [location]);
@@ -75,8 +74,8 @@ function CreateTender() {
         setFormError(response.data.message);
       }
     } catch (error) {
-      console.log(error.message);
-      setFormError('An error occurred while creating/updating the tender. Please try again later. ' + error.message);
+      console.log(error.response.data.message);
+      setFormError('An error occurred while creating/updating the tender. Please try again later. ' + error.response.data.message);
     }
   };
 
