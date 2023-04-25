@@ -1,0 +1,230 @@
+.App {
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background-color: #262c42;
+}
+
+.App-logo {
+  height: 5vmax;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.App-header {
+  background-color: #f5f5f5;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.App-header img {
+
+  width: 10vmin;
+  height: 10vmin;
+  padding: 10px;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-avatar {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  /* overflow: hidden; */
+  cursor: pointer;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.user-avatar img:hover{
+ 
+  background-color: black;
+  border-radius: 30px;
+}
+
+#dropdown-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 120px;
+  padding: 8px 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  visibility: hidden;
+}
+
+.dropdown-menu li {
+  display: block;
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f1f1f1;
+}
+
+/* #submit{
+  background-color: #3a95fe;
+
+  color: aliceblue;
+  border-radius: 15px; 
+  height: 30px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}*/
+
+h1 {
+  font-size: 2vmax;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background-color: #262c42;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 87vh;
+  height: auto;
+}
+
+.login-box {
+  min-height: 60vh;
+  margin: auto;
+  background-color: #262c42;
+  width: 50vw;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-box h2 {
+  margin-top: 0;
+  padding: 10px;
+  font-size: 40px;
+  text-align: left;
+  color: #3a95fe;
+}
+
+.login-box form {
+  display: inline-block;
+  text-align: left;
+}
+
+.login-box label {
+  display: block;
+  color: #3a95fe;
+}
+
+.login-box input[type="text"],
+.login-box input[type="email"],
+.login-box input[type="password"] {
+  /* width: 25vw; */
+  padding: 5px;
+  width: 45vw;
+  margin: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.login-box button[type="submit"] {
+  background-color: #3a95fe;
+  color: black;
+  border: none;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+  margin-top: 10px;
+  margin-left: 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+#close {
+  background-color: red;
+}
+#UC{
+  background-color: green;
+  border: 1px solid white;
+}
+.page {
+  background-color: #262c42;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 87vh;
+}
+
+.page h2{
+  margin-top: 0;
+  padding: 10px;
+  font-size: 40px;
+  text-align: left;
+  color: #3a95fe;
+}
+
+.page button{
+  background-color: #3a95fe;
+  color: black;
+  border: 1px solid #ccc;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 3px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.Table {
+  background-color: #262c42;
+  min-width: 50vb;
+  min-height: 50vh;
+  width: 100vb;
+  align-items: center;
+
+}
+
+.Table th {
+  background-color: #3a95fe;
+  font-weight: bold;
+  padding: 12px;
+  border: 1px solid black;
+  text-align: left;
+}
+
+.Table td {
+  background-color: #2d4f7f;
+  border: 1px solid black;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.form{
+  text-align: left;
+}
