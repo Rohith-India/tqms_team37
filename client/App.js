@@ -4,6 +4,7 @@ import Login from './Login';
 import Tenders from './Tenders';
 import VendorTenders from './VendorTenders';
 import CreateTender from './CreateTender';
+import Notifications from './Notifications';
 import Quotations from './Quotations';
 import CreateQuotation from './CreateQuotation';
 import Vendors from './Vendors';
@@ -45,6 +46,7 @@ function App() {
         <Route exact path="/tenders/:userid" element={<><Tenders /><BackButton /></>} />
         <Route exact path="/vendorTenders/:userid" element={<><VendorTenders /><BackButton /></>} />
         <Route exact path="/createTender/:userid" element={<><CreateTender /><BackButton /></>} />
+        <Route exact path="/notifications/:userid" element={<><Notifications /></>} />
         <Route exact path="/quotations" element={<Quotations/>} />
         <Route exact path="/createQuotation/:userid" element={<CreateQuotation />} />
         <Route exact path="/vendors" element={<Vendors />} />
