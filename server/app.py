@@ -313,7 +313,7 @@ def assign_tender():
     else:
         return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
 
-# Get all tenders assigned to a vendor and Notify
+# Get all tenders assigned to a vendor
 @app.route('/tenders/vendors/<vendor_id>', methods=['GET'])
 @jwt_required()
 def get_tenders_by_vendor(vendor_id):
@@ -328,7 +328,7 @@ def get_tenders_by_vendor(vendor_id):
     else:
         return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
 
-# Get all tenders assigned to a vendor and Notify
+#Notify the recent assignments
 @app.route('/tenders/vendors/<vendor_id>/notifications', methods=['GET'])
 @jwt_required()
 def get_tenders_by_vendor(vendor_id):
