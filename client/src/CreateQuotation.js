@@ -16,6 +16,7 @@ function CreateQuotation() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [quotationId, setQuotationId] = useState(null);
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState('');
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -29,6 +30,10 @@ function CreateQuotation() {
         .then(response => {
           if (response.data.success) {
             const { amount, currency, validity_days, description } = response.data.quotation;
+            console.log(response.data.quotation.file_name)
+            if(response.data.quotation.file_name) {
+              setFileName(response.data.quotation.file_name);
+            }
             setQuotationId(response.data.quotation._id);
             setFormData({ amount, currency, validity_days, description });
           } else {
@@ -96,6 +101,7 @@ function CreateQuotation() {
   
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
+    //setFileName(file.name);
   };
 
   return (
@@ -122,6 +128,7 @@ function CreateQuotation() {
         <div>
           <label htmlFor="file">Upload File</label>
           <input type="file" id="file" name="file" onChange={handleFileChange} />
+          {fileName && <p>Selected file: <a href={`http://127.0.0.1:5000/uploads/${fileName}`} target="_blank">{fileName}</a> </p>}
         </div>
         <button type="submit">{isUpdating ? 'Update' : 'Create'}</button>
         <button onClick={handlePopupClose}>Close</button>
