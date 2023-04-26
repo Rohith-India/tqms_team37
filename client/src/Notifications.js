@@ -36,7 +36,7 @@ function Notifications() {
       <div>
         <button onClick={handlePopupClose}>Close</button>
       </div>
-      <table border="2" className='Table'>
+      <table border="2">
         <thead>
           <tr>
             <th>Title</th>
