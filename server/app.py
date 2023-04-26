@@ -3,7 +3,6 @@ from flask_cors import CORS
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
-from flask_cors import CORS
 from bson import ObjectId
 import os
 from werkzeug.utils import secure_filename, send_from_directory
@@ -298,11 +297,21 @@ def assign_tender():
         mongo.db.tenders.update_one({'_id': tender['_id']}, {'$set': {'assigned_vendors': []}})
         for vendor_id in vendor_ids:
             mongo.db.tenders.update_one({'_id': tender['_id']}, {'$addToSet': {'assigned_vendors': vendor_id}})
+            mongo.db.notifications.insert_one({
+                'vendor_id': vendor_id,
+                'tender_id': tender_id,
+                'title': tender.get('title'),
+                'description': tender.get('descrition'),
+                'start_date': tender.get('start_date'),
+                'deadline': tender.get('deadline'),
+                'location': tender.get('location'),
+                'status': tender.get('status'),
+                'owner': tender.get('owner')
+            })
 
         return jsonify({'status': 'success', 'message': 'Tender assigned to vendors successfully'}), 200
     else:
         return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
-
 
 # Get all tenders assigned to a vendor
 @app.route('/tenders/vendors/<vendor_id>', methods=['GET'])
@@ -314,10 +323,29 @@ def get_tenders_by_vendor(vendor_id):
         tenders_list = [tender for tender in tenders]
         for tender in tenders_list:
             tender['_id'] = str(tender['_id'])  # Convert ObjectId to string
+
         return jsonify({'status': 'success', 'tenders': tenders_list}), 200
     else:
         return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
 
+#Notify the recent assignments
+@app.route('/tenders/vendors/<vendor_id>/notifications', methods=['GET'])
+@jwt_required()
+def get_tenders_by_vendor(vendor_id):
+    jwt_payload = get_jwt()
+    if 'role' in jwt_payload and jwt_payload['role'] == 'vendor':
+        notifications = mongo.db.notifications.find({'vendor_id': vendor_id})
+        notifications_list = [notification for notification in notifications]
+        for tender in notifications_list:
+            if tender:
+                mongo.db.notifications.delete_one({'tender_id': tender.get('tender_id'), 'vendor_id': vendor_id})
+
+        for notification in notifications_list:
+            notification['_id'] = str(notification['_id']) # Convert Id to string
+
+        return jsonify({'status': 'success', 'notifications': notifications_list}), 200
+    else:
+        return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
 
 # Update an existing tender
 @app.route('/tenders/<tender_id>', methods=['PUT'])
