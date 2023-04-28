@@ -331,7 +331,7 @@ def get_tenders_by_vendor(vendor_id):
 #Notify the recent assignments
 @app.route('/tenders/vendors/<vendor_id>/notifications', methods=['GET'])
 @jwt_required()
-def get_tenders_by_vendor(vendor_id):
+def get_tenders_by_vendor_notifications(vendor_id):
     jwt_payload = get_jwt()
     if 'role' in jwt_payload and jwt_payload['role'] == 'vendor':
         notifications = mongo.db.notifications.find({'vendor_id': vendor_id})
