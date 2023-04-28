@@ -1,0 +1,19 @@
+User Administration is completely managed by 'Admin' user
+
+Relation among Vendor, Tender and Quotation:
+
+1. A Tender Manager creates a Tender and assigns the same to a set of selected vendors.
+
+2. A Vendor when login to the system, sees all the Tenders assigned to him/her
+
+3. The Vendor selects a Tender and creates a Quotation. The vendor can also upload a document along with the Quotation.
+
+4. Similarly all the Vendors who are assigned to a Tender creates their Quotations against a Tender
+
+5. The Tender Manager can view all the Quotations created by various vendors against a Tender, review the contents of each Quotation against a Tender carefully and Approve one of them and Reject others.
+
+6. When the Tender Manager Rejects a Quotation, only the status of the selected Quotation would be changed to 'Rejected'
+
+7. When the Tender Manager Accepts a Quotation, the status of the selected Quotation would be changed to 'Accepted' and the status of rest of the Quotations would be changed to 'Rejected'
+
+8. The Tender Manager closes the Tender
