@@ -24,7 +24,7 @@ function Tenders() {
 
   const handleNewTenderClick = () => {
     const accessToken = new URLSearchParams(location.search).get('accessToken');
-    window.open(`/createTender/${userid}?accessToken=${accessToken}`, '_blank', 'width=600,height=600');
+    window.open(`/createTender/${userid}?accessToken=${accessToken}`, '_blank', 'width=800,height=1000');
   };
 
   const handleSelectTender = (e, tender) => {
@@ -75,21 +75,21 @@ function Tenders() {
         assignedVendors = tender.assigned_vendors.join(',');
       }
       const url = `/vendors?tender_id=${tender._id}&accessToken=${accessToken}&assigned_vendors=${assignedVendors}`;
-      window.open(url, '_blank', 'width=600,height=600');
+      window.open(url, '_blank', 'width=800,height=1000');
     }
   };
 
   const handleModifyTender = () => {
     if (selectedTenders.length == 1 && selectedTenders[0].status != 'Closed') {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
-      window.open(`/createTender/${userid}?_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, selectedTenders[0], 'width=600,height=600');
+      window.open(`/createTender/${userid}?_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, selectedTenders[0], 'width=800,height=1000');
     }
   };
 
   const handleViewQuotations = async () => {
     if (selectedTenders[0]) {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
-      window.open(`/quotations?tenderId=${selectedTenders[0]._id}&accessToken=${accessToken}`, '_blank', 'width=600,height=600');
+      window.open(`/quotations?tenderId=${selectedTenders[0]._id}&accessToken=${accessToken}`, '_blank', 'width=800,height=1000');
     }
   };
 
@@ -118,40 +118,49 @@ function Tenders() {
   const isOneRowSelected = selectedTenders.length === 1; // check if one row is selected
 
   return (
-    <div>
-      <h1>Tenders</h1>
-      <button onClick={handleNewTenderClick}>Create a New Tender</button>
-      <button onClick={handleModifyTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Modify Tender</button>
-      <button onClick={handleDeleteTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Delete Tender</button>
-      <button onClick={handleAssignVendors} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Assign Vendors</button>
-      <button onClick={handleViewQuotations} disabled={!isOneRowSelected}>View Quotations</button>
-      <button onClick={handleCloseTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Close Tender</button>
-      <table border="2">
+    <div className='container'>
+      <h1 className='title'>Tenders</h1>
+      <table>
         <thead>
           <tr>
-            <th></th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Location</th>
-            <th>Start Date</th>
-            <th>Deadline</th>
-            <th>Status</th>
+            <th><button className='button' onClick={handleNewTenderClick}>Create Tender</button></th>
+            <th><button className='button' onClick={handleModifyTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Modify Tender</button></th>
+            <th><button className='button' onClick={handleDeleteTender} disabled={!isOneRowSelected}>Delete Tender</button></th>
+            <th><button className='button' onClick={handleAssignVendors} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Assign Vendors</button></th>
+            <th><button className='button' onClick={handleViewQuotations} disabled={!isOneRowSelected}>View Quotations</button></th>
+            <th><button className='button' onClick={handleCloseTender} disabled={!isOneRowSelected || (selectedTenders.length === 1 && selectedTenders[0].status === 'Closed')}>Close Tender</button></th>
+          </tr>
+        </thead>
+      </table>
+      <br></br>
+      <hr></hr>
+      <table border="2" className='table'>
+        <thead>
+          <tr className='tr'>
+            <th className='th'></th>
+            <th className='th'>Title</th>
+            <th className='th'>Description</th>
+            <th className='th'>Location</th>
+            <th className='th'>Start Date</th>
+            <th className='th'>Deadline</th>
+            <th className='th'>Status</th>
           </tr>
         </thead>
         <tbody>
           {tenders.map((tender) => (
-            <tr key={tender._id}>
-              <td><input type="checkbox" onChange={(e) => handleSelectTender(e, tender)} /></td>
-              <td>{tender.title}</td>
-              <td>{tender.description}</td>
-              <td>{tender.location}</td>
-              <td>{tender.start_date}</td>
-              <td>{tender.deadline}</td>
-              <td>{tender.status}</td>
+            <tr className='tr' key={tender._id}>
+              <td className='td'><input type="checkbox" onChange={(e) => handleSelectTender(e, tender)} /></td>
+              <td className='td'>{tender.title}</td>
+              <td className='td'>{tender.description}</td>
+              <td className='td'>{tender.location}</td>
+              <td className='td'>{tender.start_date}</td>
+              <td className='td'>{tender.deadline}</td>
+              <td className='td'>{tender.status}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <th><button className='button' onClick={handleNewTenderClick}>Logout</button></th>
     </div>
   );
 }

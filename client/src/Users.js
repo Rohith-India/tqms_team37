@@ -25,7 +25,7 @@ function Users() {
 
   const handleNewUserClick = () => {
     const accessToken = new URLSearchParams(location.search).get('accessToken');
-    window.open(`/createUser?accessToken=${accessToken}`, '_blank', 'width=600,height=600');
+    window.open(`/createUser?accessToken=${accessToken}`, '_blank', 'width=800,height=1000');
   };
 
   const handleSelectUser = (e, user) => {
@@ -44,9 +44,10 @@ function Users() {
         alert('User deleted successfully!');
         setUsers(users.filter((user) => user._id !== selectedUsers[0]._id));
         setSelectedUsers([]);
-        //window.location.reload()
+        window.location.reload()
       } else {
         console.log(response.data.message);
+        alert('User is not deleted!');
       }
     }
   };
@@ -55,24 +56,28 @@ function Users() {
     if (selectedUsers.length === 1) { // only enable the button if one row is selected
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       console.log(selectedUsers[0])
-      window.open(`/createUser?_id=${selectedUsers[0]._id}&accessToken=${accessToken}`, selectedUsers[0], 'width=600,height=600');
+      window.open(`/createUser?_id=${selectedUsers[0]._id}&accessToken=${accessToken}`, selectedUsers[0], 'width=800,height=1000');
     }
   };
 
   const isOneRowSelected = selectedUsers.length === 1; // check if one row is selected
 
   return (
-    <div>
-      <h1>Users</h1>
-      <button onClick={handleNewUserClick}>Create a New User</button>
-      <button onClick={handleModifyUser} disabled={!isOneRowSelected}>Modify User</button>
-      <button onClick={handleDeleteUser} disabled={!isOneRowSelected}>Delete User</button>
-      <Table border="2">
+    <div className='container'>
+      <h1 className='title'>Users</h1>
+      <table>
         <thead>
           <tr>
-            <th>
-              <input type="checkbox" disabled={selectedUsers.length > 0} /> {/* disable the checkbox header if any row is selected */}
-            </th>
+            <th><button className='button' onClick={handleNewUserClick}>Create a New User</button></th>
+            <th><button className='button' onClick={handleModifyUser} disabled={!isOneRowSelected}>Modify User</button></th>
+            <th><button className='button' onClick={handleDeleteUser} disabled={!isOneRowSelected}>Delete User</button></th>
+          </tr>
+        </thead>
+      </table>
+      <table className='table' border="2">
+        <thead>
+          <tr>
+            <th></th>
             <th>Username</th>
             <th>Password</th>
             <th>Role</th>
@@ -80,7 +85,6 @@ function Users() {
             <th>Contact No.</th>
             <th>Address</th>
             <th>Organization</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -99,7 +103,7 @@ function Users() {
             </tr>
           ))}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 }

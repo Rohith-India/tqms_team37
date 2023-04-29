@@ -74,28 +74,33 @@ function Vendors() {
   };
 
   return (
-    <div>
-      <h1>Vendors</h1>
-      <button onClick={handleAssignClick}>Assign</button>
-      <button onClick={handlePopupClose}>Close</button>
-      <table border="2">
+    <div className='container-popup'>
+      <h1 className='title-popup'>Vendors</h1>
+      <table>
         <thead>
-          <tr>
-            <th>Select</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Contact No</th>
-            <th>Address</th>
+        <th><button className='button-popup' onClick={handleAssignClick}>Assign</button></th>
+        <th><button className='button-popup' onClick={handlePopupClose}>Close</button></th>
+        </thead>
+      </table>
+      <br></br>
+      <table className='table-popup' border="2">
+        <thead>
+          <tr className='tr'>
+            <th className='th'>Select</th>
+            <th className='th'>Username</th>
+            <th className='th'>Email</th>
+            <th className='th'>Contact No</th>
+            <th className='th'>Address</th>
           </tr>
         </thead>
         <tbody>
           {vendors.map(vendor => (
-            <tr key={vendor._id}>
-              <td><input type="checkbox" value={vendor._id} checked={tenderAssignedVendors.includes(vendor._id)} onChange={handleCheckboxChange} /></td>
-              <td>{vendor.username}</td>
-              <td>{vendor.email}</td>
-              <td>{vendor.contactNo}</td>
-              <td>{vendor.address}</td>
+            <tr className='tr' key={vendor._id}>
+              <td className='td'><input type="checkbox" value={vendor._id} checked={tenderAssignedVendors.includes(vendor._id)} onChange={handleCheckboxChange} /></td>
+              <td className='td'>{vendor.username}</td>
+              <td className='td'>{vendor.email}</td>
+              <td className='td'>{vendor.contactNo}</td>
+              <td className='td'>{vendor.address}</td>
             </tr>
           ))}
         </tbody>

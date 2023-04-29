@@ -84,33 +84,35 @@ function CreateTender() {
   };
   
   return (
-    <div>
-      <h1>{isUpdating ? 'Update Tender' : 'Create Tender'}</h1>
-      {formError && <p>{formError}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <textarea id="description" name="description" value={formData.description} onChange={handleChange} required></textarea>
-        </div>
-        <div>
-          <label htmlFor="start_date">Start Date</label>
-          <input type="date" id="start_date" name="start_date" value={formData.start_date} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="deadline">Deadline</label>
-          <input type="date" id="deadline" name="deadline" value={formData.deadline} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="location">Location</label>
-          <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} required />
-        </div>
-        <button type="submit">{isUpdating ? 'Update' : 'Create'}</button>
-        <button onClick={handlePopupClose}>Close</button>
-      </form>
+    <div className='container-popup'>
+      <h1 className='title-popup'>{isUpdating ? 'Update Tender' : 'Create Tender'}</h1>
+      <div className='form-popup'>
+        {formError && <p>{formError}</p>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="title">Title</label>
+            <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
+          </div>
+          <div>
+            <label htmlFor="description">Description</label>
+            <textarea className='description' id="description" name="description" value={formData.description} onChange={handleChange} required></textarea>
+          </div>
+          <div>
+            <label htmlFor="start_date">Start Date</label>
+            <input type="date" id="start_date" name="start_date" value={formData.start_date} onChange={handleChange} required />
+          </div>
+          <div>
+            <label htmlFor="deadline">Deadline</label>
+            <input type="date" id="deadline" name="deadline" value={formData.deadline} onChange={handleChange} required />
+          </div>
+          <div>
+            <label htmlFor="location">Location</label>
+            <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} required />
+          </div>
+          <button className='button-popup' type="submit">{isUpdating ? 'Update' : 'Create'}</button>
+          <button className='button-popup' onClick={handlePopupClose}>Close</button>
+        </form>
+      </div>
     </div>
   );
 }

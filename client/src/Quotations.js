@@ -80,37 +80,45 @@ function Quotations() {
     };
 
     return (
-        <div>
-            <h1>Quotations</h1>
-            <button onClick={handleAcceptQuotation} disabled={!selectedQuotation}>Accept Quotation</button>
-            <button onClick={handleRejectQuotation} disabled={!selectedQuotation}>Reject Quotation</button>
-            <button onClick={handlePopupClose}>Close</button>
-            <table border="2">
+        <div className='container-popup'>
+            <h1 className='title-popup'>Quotations</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th><button className='button-popup' onClick={handleAcceptQuotation} disabled={!selectedQuotation}>Accept</button></th>
+                  <th><button className='button-popup' onClick={handleRejectQuotation} disabled={!selectedQuotation}>Reject</button></th>
+                </tr>
+              </thead>
+            </table>
+            <br></br>
+            <table border="2" className='table-popup'>
                 <thead>
-                    <tr>
-                        <th></th>
-                        <th>Vendor</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Currency</th>
-                        <th>Status</th>
-                        <th>File Name</th>
+                    <tr className='tr'>
+                        <th className='th'></th>
+                        <th className='th'>Vendor</th>
+                        <th className='th'>Description</th>
+                        <th className='th'>Amount</th>
+                        <th className='th'>Currency</th>
+                        <th className='th'>Status</th>
+                        <th className='th'>File Name</th>
                     </tr>
                 </thead>
                 <tbody>
                     {quotations.map((quotation) => (
-                        <tr key={quotation._id}>
-                            <td><input type="checkbox" onChange={(e) => handleSelectQuotation(e, quotation)} /></td>
-                            <td>{quotation.vendor_name}</td>
-                            <td>{quotation.description}</td>
-                            <td>{quotation.amount}</td>
-                            <td>{quotation.currency}</td>
-                            <td>{quotation.status}</td>
-                            <td>{quotation.file_name ? <a href={`http://127.0.0.1:5000/uploads/${quotation.file_name}`} target="_blank">{quotation.file_name}</a> : ""}</td>
+                        <tr className='tr' key={quotation._id}>
+                            <td className='td'><input type="checkbox" onChange={(e) => handleSelectQuotation(e, quotation)} /></td>
+                            <td className='td'>{quotation.vendor_name}</td>
+                            <td className='td'>{quotation.description}</td>
+                            <td className='td'>{quotation.amount}</td>
+                            <td className='td'>{quotation.currency}</td>
+                            <td className='td'>{quotation.status}</td>
+                            <td className='td'>{quotation.file_name ? <a href={`http://127.0.0.1:5000/uploads/${quotation.file_name}`} target="_blank">{quotation.file_name}</a> : ""}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <br></br>
+            <th><button className='button' onClick={handlePopupClose}>Close</button></th>
         </div>
     );
 }

@@ -94,10 +94,10 @@ function CreateUser() {
   };
 
   return (
-    <div>
-      <h1>{isUpdating ? 'Update User' : 'Create User'}</h1>
+    <div className='container-popup'>
+      <h1 className='title-popup'>{isUpdating ? 'Update User' : 'Create User'}</h1>
       {formError && <p>{formError}</p>}
-      <form onSubmit={handleSubmit}>
+      <form className='form-popup' onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username</label>
           <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />

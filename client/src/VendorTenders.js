@@ -38,7 +38,7 @@ function VendorTenders() {
     // Code to create a new tender
     const accessToken = new URLSearchParams(location.search).get('accessToken');
     console.log(accessToken)
-    window.open(`/createQuotation/${userid}?tender_id=${selectedTenders[0]._id}&&accessToken=${accessToken}`, '_blank', 'width=600,height=600');
+    window.open(`/createQuotation/${userid}?tender_id=${selectedTenders[0]._id}&&accessToken=${accessToken}`, '_blank', 'width=800,height=61000');
   };
 
   const handleUpdate = () => {
@@ -46,7 +46,7 @@ function VendorTenders() {
     if (selectedTenders.length === 1) { // only enable the button if one row is selected
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       console.log(selectedTenders[0])
-      window.open(`/createQuotation/${userid}?update=1&&tender_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, selectedTenders[0], 'width=600,height=600');
+      window.open(`/createQuotation/${userid}?update=1&&tender_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, selectedTenders[0], 'width=800,height=1000');
     }
   };
 
@@ -71,14 +71,21 @@ function VendorTenders() {
   const isOneRowSelected = selectedTenders.length === 1; // check if one row is selected
 
   return (
-    <div>
-      <h1>My Tenders</h1>
-      <div>
-        <button onClick={handleCreateNew} disabled={!isOneRowSelected}>Create New Quotation</button>
-        <button onClick={handleUpdate} disabled={!isOneRowSelected}>Update Quotation</button>
-        <button onClick={handleDelete} disabled={!isOneRowSelected}>Delete Quotation</button>
-      </div>
-      <table border="2">
+    <div className="container">
+      <h1 className="title">Tenders</h1>
+      <table>
+        <thead>
+          <tr>
+            <th><button className="button" onClick={handleCreateNew} disabled={!isOneRowSelected}>Create New Quotation</button></th>
+            <th><button className="button" onClick={handleDelete} disabled={!isOneRowSelected}>View Quotation</button></th>
+            <th><button className="button" onClick={handleUpdate} disabled={!isOneRowSelected}>Update Quotation</button></th>
+            <th><button className="button" onClick={handleDelete} disabled={!isOneRowSelected}>Delete Quotation</button></th>
+          </tr>
+        </thead>
+      </table>
+      <br></br>
+      <hr></hr>
+      <table border="2" className='table'>
         <thead>
           <tr>
             <th>Select</th>

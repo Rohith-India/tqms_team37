@@ -44,22 +44,22 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Tender and Quotation Management System</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input type="text" value={username} onChange={handleUsernameChange} />
+    <div className="container">
+      <h1 className="title">TENDER & QUOTATION MANAGEMENT SYSTEM</h1>
+      <form className="form" onSubmit={handleSubmit}>
+        <h1 className="title-popup">LOGIN</h1>
+        <br></br>
+        <label className="label">
+          USERNAME
+          <input type="text" className="input" value={username} onChange={handleUsernameChange} />
         </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" value={password} onChange={handlePasswordChange} />
+        <label className="label">
+          PASSWORD
+          <input type="password" className="input" value={password} onChange={handlePasswordChange} />
         </label>
-        <br />
-        <button type="submit">Login</button>
+        <button type="submit" className="button">LOGIN</button>
       </form>
-    </div>
+  </div>
   );
 }
 

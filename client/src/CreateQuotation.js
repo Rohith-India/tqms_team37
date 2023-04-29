@@ -105,10 +105,10 @@ function CreateQuotation() {
   };
 
   return (
-    <div>
-      <h1>{isUpdating ? 'Update Quotation' : 'Create Quotation'}</h1>
+    <div className='container-popup'>
+      <h1 className='title-popup'>{isUpdating ? 'Update Quotation' : 'Create Quotation'}</h1>
       {formError && <p>{formError}</p>}
-      <form onSubmit={handleSubmit}>
+      <form className='form-popup' onSubmit={handleSubmit}>
         <div>
           <label htmlFor="amount">Amount</label>
           <input type="number" id="amount" name="amount" value={formData.amount} onChange={handleChange} required />
@@ -123,15 +123,15 @@ function CreateQuotation() {
         </div>
         <div>
           <label htmlFor="description">Description</label>
-          <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+          <textarea className='description' id="description" name="description" value={formData.description} onChange={handleChange} required />
         </div>
         <div>
           <label htmlFor="file">Upload File</label>
-          <input type="file" id="file" name="file" onChange={handleFileChange} />
-          {fileName && <p>Selected file: <a href={`http://127.0.0.1:5000/uploads/${fileName}`} target="_blank">{fileName}</a> </p>}
+          <input className='input' type="file" id="file" name="file" onChange={handleFileChange} />
+          {fileName && <h3 className='pdf'>Selected file: <a href={`http://127.0.0.1:5000/uploads/${fileName}`} target="_blank">{fileName}</a> </h3>}
         </div>
-        <button type="submit">{isUpdating ? 'Update' : 'Create'}</button>
-        <button onClick={handlePopupClose}>Close</button>
+        <button className='button-popup' type="submit">{isUpdating ? 'Update' : 'Create'}</button>
+        <button className='button-popup' onClick={handlePopupClose}>Close</button>
       </form>
     </div>
   );
