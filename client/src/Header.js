@@ -1,20 +1,14 @@
 import React from "react";
-import "./App.css";
-import UserMenu from "./UserMenu";
 import logo from "./logo.png";
+import "./App.css";
 
-function Header() {
-    let menu = document.getElementById('dropdown-menu');
-    let avatar = document.getElementsByClassName('user-avatar')
-    avatar.onmouseover= function (e){
-         menu.style.visibility='visible'  
-    }
-    return (
-        <header className="App-header">
-            <img src={logo} alt='logo' />
-            <text>TENDERS AND QUOTATIONS MANAGEMENT SYSTEM</text>
-            <UserMenu />
-        </header>
+function header(){
+    return(
+    <header className='App-header'>
+        <img src={logo} alt = "logo" height={120} width={160}/><h1 className="title-blank">!!</h1>
+        <h1 className="title-popup">TENDER & QUOTATION MANAGEMENT SYSTEM</h1>
+    </header>
     );
 }
-export default Header;
+
+export default header;

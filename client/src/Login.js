@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -24,7 +25,7 @@ function Login() {
     const url = 'http://127.0.0.1:5000/login';
     const data = { username, password, role };
     const response = await axios.post(url, data);
-    
+
     if (response.data.success) {
       alert('Login successful!');
       setAccessToken(response.data.access_token);
@@ -44,22 +45,24 @@ function Login() {
   };
 
   return (
-    <div className="container">
-      <h1 className="title">TENDER & QUOTATION MANAGEMENT SYSTEM</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <h1 className="title-popup">LOGIN</h1>
-        <br></br>
-        <label className="label">
-          USERNAME
-          <input type="text" className="input" value={username} onChange={handleUsernameChange} />
-        </label>
-        <label className="label">
-          PASSWORD
-          <input type="password" className="input" value={password} onChange={handlePasswordChange} />
-        </label>
-        <button type="submit" className="button">LOGIN</button>
-      </form>
-  </div>
+    <>
+      <Header />
+      <div className="container">
+        <form className="form" onSubmit={handleSubmit}>
+          <h1 className="title-popup">LOGIN</h1>
+          <br></br>
+          <label className="label">
+            USERNAME
+            <input type="text" className="input" value={username} onChange={handleUsernameChange} />
+          </label>
+          <label className="label">
+            PASSWORD
+            <input type="password" className="input" value={password} onChange={handlePasswordChange} />
+          </label>
+          <button type="submit" className="button">LOGIN</button>
+        </form>
+      </div>
+    </>
   );
 }
 

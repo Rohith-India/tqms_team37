@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
+from flask_cors import CORS
 from bson import ObjectId
 import os
 from werkzeug.utils import secure_filename, send_from_directory
@@ -331,21 +332,41 @@ def get_tenders_by_vendor(vendor_id):
 #Notify the recent assignments
 @app.route('/tenders/vendors/<vendor_id>/notifications', methods=['GET'])
 @jwt_required()
-def get_tenders_by_vendor_notifications(vendor_id):
+def notify_vendors(vendor_id):
     jwt_payload = get_jwt()
     if 'role' in jwt_payload and jwt_payload['role'] == 'vendor':
         notifications = mongo.db.notifications.find({'vendor_id': vendor_id})
         notifications_list = [notification for notification in notifications]
-        for tender in notifications_list:
-            if tender:
-                mongo.db.notifications.delete_one({'tender_id': tender.get('tender_id'), 'vendor_id': vendor_id})
 
+        # for notification in notifications_list:
+        #     if notification:
+        #         mongo.db.notifications.delete_one({'tender_id': notification.get('tender_id'), 'vendor_id': vendor_id})
+        
         for notification in notifications_list:
             notification['_id'] = str(notification['_id']) # Convert Id to string
 
         return jsonify({'status': 'success', 'notifications': notifications_list}), 200
     else:
         return jsonify({'status': 'fail', 'message': 'Unauthorized access'}), 401
+
+#Clear the notifications
+@app.route('/tenders/vendors/<vendor_id>/notifications/clear', methods=['DELETE'])
+@jwt_required()
+def delete_vendor_notifications(vendor_id):
+    jwt_payload = get_jwt()
+    # Get the current user's ID from the JWT
+    
+    # # Check if the current user is the same as the requested user
+    # if current_user_id != user_id:
+    #     return jsonify({'status': 'error', 'message': 'Unauthorized access.'}), 401
+    
+    notifications = mongo.db.notifications.find({'vendor_id': vendor_id})
+
+    for notification in notifications:
+        mongo.db.notifications.delete_one({'tender_id': notification.get('tender_id'), 'vendor_id': vendor_id})
+
+    return jsonify({'status': 'success', 'message': 'Notifications deleted successfully'}), 200
+
 
 # Update an existing tender
 @app.route('/tenders/<tender_id>', methods=['PUT'])

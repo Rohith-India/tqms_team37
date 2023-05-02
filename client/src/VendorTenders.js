@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 function VendorTenders() {
   const { userid } = useParams();
@@ -38,7 +38,7 @@ function VendorTenders() {
     // Code to create a new tender
     const accessToken = new URLSearchParams(location.search).get('accessToken');
     console.log(accessToken)
-    window.open(`/createQuotation/${userid}?tender_id=${selectedTenders[0]._id}&&accessToken=${accessToken}`, '_blank', 'width=800,height=61000');
+    window.open(`/createQuotation/${userid}?tender_id=${selectedTenders[0]._id}&&accessToken=${accessToken}`, '_blank', 'width=800,height=1000');
   };
 
   const handleUpdate = () => {
@@ -65,7 +65,21 @@ function VendorTenders() {
         .catch(error => {
           console.log(error);
         });
-    
+  };
+
+  const handleNotifications = () => {
+    const accessToken = new URLSearchParams(location.search).get('accessToken');
+    console.log(accessToken)
+    window.open(`/notifications/${userid}?&accessToken=${accessToken}`, '_blank', 'width=800,height=1000');
+  }
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    localStorage.removeItem('token');
+    // Perform logout logic here (e.g. clear session, redirect to login page)
+    navigate('/');
+    alert('Logged out from the system successfully.')
   };
 
   const isOneRowSelected = selectedTenders.length === 1; // check if one row is selected
@@ -77,9 +91,9 @@ function VendorTenders() {
         <thead>
           <tr>
             <th><button className="button" onClick={handleCreateNew} disabled={!isOneRowSelected}>Create New Quotation</button></th>
-            <th><button className="button" onClick={handleDelete} disabled={!isOneRowSelected}>View Quotation</button></th>
             <th><button className="button" onClick={handleUpdate} disabled={!isOneRowSelected}>Update Quotation</button></th>
             <th><button className="button" onClick={handleDelete} disabled={!isOneRowSelected}>Delete Quotation</button></th>
+            <th><button className="button" onClick={handleNotifications}>Notifications</button></th>
           </tr>
         </thead>
       </table>
@@ -111,6 +125,7 @@ function VendorTenders() {
           ))}
         </tbody>
       </table>
+      <th><button className='button' onClick={handleLogout}>Logout</button></th>
     </div>
   );
 }

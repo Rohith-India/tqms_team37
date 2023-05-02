@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 function Tenders() {
   const { userid } = useParams();
@@ -36,9 +36,9 @@ function Tenders() {
   };
 
   const handleDeleteTender = async () => {
-    if (selectedTenders.length === 1 && selectedTenders[0].status != 'Closed') { // only enable the button if one row is selected
+    if (selectedTenders.length === 1 && selectedTenders[0].status !== 'Closed') { // only enable the button if one row is selected
       const accessToken = new URLSearchParams(location.search).get('accessToken');
-      const response = null;
+      var response = null;
       try {
         response = await axios.delete(`http://127.0.0.1:5000/tenders/${selectedTenders[0]._id}`, { headers: { Authorization: `Bearer ${accessToken}` } });
         alert(response.data.message);
@@ -66,7 +66,7 @@ function Tenders() {
       return;
     }
     // do something with the selected tender
-    if (selectedTenders.length == 1 && selectedTenders[0].status != 'Closed') {
+    if (selectedTenders.length === 1 && selectedTenders[0].status !== 'Closed') {
       const tender = selectedTenders[0];
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       console.log(tender.assigned_vendors)
@@ -80,7 +80,7 @@ function Tenders() {
   };
 
   const handleModifyTender = () => {
-    if (selectedTenders.length == 1 && selectedTenders[0].status != 'Closed') {
+    if (selectedTenders.length === 1 && selectedTenders[0].status !== 'Closed') {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       window.open(`/createTender/${userid}?_id=${selectedTenders[0]._id}&accessToken=${accessToken}`, selectedTenders[0], 'width=800,height=1000');
     }
@@ -93,8 +93,17 @@ function Tenders() {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    localStorage.removeItem('token');
+    // Perform logout logic here (e.g. clear session, redirect to login page)
+    navigate('/');
+    alert('Logged out from the system successfully.')
+  };
+
   const handleCloseTender = async () => {
-    if (selectedTenders.length === 1 && selectedTenders[0].status != 'Closed') {
+    if (selectedTenders.length === 1 && selectedTenders[0].status !== 'Closed') {
       const accessToken = new URLSearchParams(location.search).get('accessToken');
       const response = await axios.put(`http://127.0.0.1:5000/tenders/close/${selectedTenders[0]._id}`, { status: 'closed' }, { headers: { Authorization: `Bearer ${accessToken}` } });
       alert(response.data.message);
@@ -160,7 +169,7 @@ function Tenders() {
           ))}
         </tbody>
       </table>
-      <th><button className='button' onClick={handleNewTenderClick}>Logout</button></th>
+      <th><button className='button' onClick={handleLogout}>Logout</button></th>
     </div>
   );
 }

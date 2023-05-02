@@ -29,14 +29,30 @@ function Notifications() {
   const handlePopupClose = () => {
     window.close(); // Close the current window
   };
+
+  const handleClearNotifications = async () => {
+    const params = new URLSearchParams(location.search);
+    const accessToken = params.get('accessToken');
+  
+    try {
+      const response = await axios.delete(`http://127.0.0.1:5000/tenders/vendors/${userid}/notifications/clear`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+  
+      if (response.data.status === 'success') {
+        setNotifications([]);
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };  
   
   return (
-    <div>
-      <h2>Notifications</h2>
-      <div>
-        <button onClick={handlePopupClose}>Close</button>
-      </div>
-      <table border="2">
+    <div className='container-popup'>
+      <h2 className='title-popup'>Notifications</h2>
+      <table className='table-popup' border="2">
         <thead>
           <tr>
             <th>Title</th>
@@ -49,7 +65,7 @@ function Notifications() {
         </thead>
         <tbody>
           {notifications.map((notification) => (
-            <tr>
+            <tr key={notification.tender_id}>
               <td>{notification.title}</td>
               <td>{notification.owner}</td>
               <td>{notification.location}</td>
@@ -60,6 +76,8 @@ function Notifications() {
           ))}
         </tbody>
       </table>
+      <th><button className='button-popup' onClick={handleClearNotifications}>Clear</button></th>
+      <th><button className='button-popup' onClick={handlePopupClose}>Close</button></th>
     </div>
   );
 }

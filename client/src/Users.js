@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'reactstrap';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -60,6 +60,15 @@ function Users() {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    localStorage.removeItem('token');
+    // Perform logout logic here (e.g. clear session, redirect to login page)
+    navigate('/');
+    alert('Logged out from the system successfully.')
+  };
+
   const isOneRowSelected = selectedUsers.length === 1; // check if one row is selected
 
   return (
@@ -104,6 +113,7 @@ function Users() {
           ))}
         </tbody>
       </table>
+      <th><button className='button' onClick={handleLogout}>Logout</button></th>
     </div>
   );
 }
