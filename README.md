@@ -1,6 +1,12 @@
 # tqms_team37
 
-How to build and start Server:
+1. Download and install the following on the server:
+
+        Node.js from https://nodejs.org/en/download
+        Python from https://www.python.org/downloads/
+        pip
+    
+2. How to build and start Server:
 
     Onetime setup:
     
@@ -21,7 +27,7 @@ How to build and start Server:
         export FLASK_APP=app.py
         flask run
 
-How to build and start Client:
+3. How to build and start Client:
 
     Onetime setup:
 
@@ -37,7 +43,7 @@ How to build and start Client:
         Copy files from https://github.com/Rohith-India/CS4443/blob/main/Team-37/TQMS/client/src/ to tqms/client/src folder
         npm start
 
-MongoDB details:
+4. MongoDB database details:
 
     saisivarohith
     TQMS123
@@ -48,18 +54,18 @@ MongoDB details:
     Connect from shell:
     mongosh "mongodb+srv://cluster0.s6qo7ga.mongodb.net/myFirstDatabase" --apiVersion 1 --username saisivarohith
 
-Default user:
+5. The following default user is created with the above setup:
 
         user name        password           role
         =========        ========           =====
         admin            a                  admin
 
-How to access UI:
+6. How to access UI:
 
     http://localhost:3000
 
 
-APIs details:
+7. APIs details:
 
 I USER MANAGEMENT
 
