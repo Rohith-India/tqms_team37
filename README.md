@@ -1,11 +1,5 @@
 # tqms_team37
 
-
-How to Create a Flask + React Project | Python Backend + React Frontend ?
-
-    https://www.youtube.com/watch?v=7LNl2JlZKHA
-
-
 How to build and start Server:
 
     Onetime setup:
@@ -43,7 +37,7 @@ How to build and start Client:
         Copy file https://github.com/Rohith-India/CS4443/blob/main/Team-37/TQMS/client/src/App.js to tqms/client/src folder
         npm start
 
-MongoDB credentials:
+MongoDB details:
 
     saisivarohith
     TQMS123
@@ -54,15 +48,15 @@ MongoDB credentials:
     Connect from shell:
     mongosh "mongodb+srv://cluster0.s6qo7ga.mongodb.net/myFirstDatabase" --apiVersion 1 --username saisivarohith
 
-List of available users:
+Default user:
 
         user name        password           role
         =========        ========           =====
         admin            a                  admin
-        tm               tm                 tender_manager
-        v1               v1                 vendor
-        v2               v2                 vendor
-        v3               v3                 vendor
+
+How to access UI:
+
+    http://localhost:3000
 
 
 APIs details:
