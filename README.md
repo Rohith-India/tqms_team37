@@ -34,7 +34,7 @@ How to build and start Client:
     Start Client:
     
         cd tqms/client
-        Copy file https://github.com/Rohith-India/CS4443/blob/main/Team-37/TQMS/client/src/App.js to tqms/client/src folder
+        Copy files from https://github.com/Rohith-India/CS4443/blob/main/Team-37/TQMS/client/src/ to tqms/client/src folder
         npm start
 
 MongoDB details:
